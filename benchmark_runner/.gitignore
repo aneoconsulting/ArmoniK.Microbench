@@ -1,0 +1,8 @@
+bin/
+obj/
+/packages/
+riderModule.iml
+.vs/
+/_ReSharper.Caches/
+BenchmarkDotNet.Artifacts/*
+benchmark-artifacts
