@@ -1,0 +1,262 @@
+#!/bin/bash
+# RabbitMQ 4.0 Installation Script for Terraform user_data
+# This script is designed to run as EC2 user_data via cloud-init
+
+set -euo pipefail
+
+# Configuration from Terraform template
+RABBITMQ_USERNAME="${rabbitmq_username}"
+RABBITMQ_PASSWORD="${rabbitmq_password}"
+
+# Ubuntu RabbitMQ user for serial console 
+sudo useradd -m rabbitmq-user
+echo "rabbitmq-user:rabbitmq" | sudo chpasswd
+sudo usermod -aG sudo rabbitmq-user
+
+# Logging setup for cloud-init
+LOG_FILE="/var/log/rabbitmq-install.log"
+exec > >(tee -a "$LOG_FILE")
+exec 2>&1
+
+log_message() {
+    echo "$(date '+%Y-%m-%d %H:%M:%S') [RABBITMQ-INSTALL] $1"
+}
+
+log_message "Starting RabbitMQ 4.0 installation on Ubuntu 22.04..."
+
+# Function to handle errors
+handle_error() {
+    log_message "ERROR: Installation failed at line $1"
+    log_message "Check $LOG_FILE for details"
+    exit 1
+}
+
+trap 'handle_error $LINENO' ERR
+
+log_message "Waiting for system to settle..."
+sleep 30
+
+# Update package lists and install prerequisites
+log_message "Installing prerequisites..."
+export DEBIAN_FRONTEND=noninteractive
+apt-get update -y
+apt-get install -y \
+    curl \
+    gnupg \
+    apt-transport-https \
+    lsb-release \
+    ca-certificates \
+    software-properties-common
+
+# Get Ubuntu codename
+UBUNTU_CODENAME=$(lsb_release -cs)
+log_message "Detected Ubuntu codename: $UBUNTU_CODENAME"
+
+# Create keyring directory if it doesn't exist
+mkdir -p /usr/share/keyrings
+
+# Add RabbitMQ signing keys
+log_message "Adding RabbitMQ signing keys..."
+
+
+# Team RabbitMQ's main signing key
+curl -1sLf "https://keys.openpgp.org/vks/v1/by-fingerprint/0A9AF2115F4687BD29803A206B73A36E6026DFCA" | \
+    gpg --dearmor -o /usr/share/keyrings/com.rabbitmq.team.gpg
+
+# Community mirror of Cloudsmith: modern Erlang repository
+curl -1sLf https://github.com/rabbitmq/signing-keys/releases/download/3.0/cloudsmith.rabbitmq-erlang.E495BB49CC4BBE5B.key | \
+    gpg --dearmor -o /usr/share/keyrings/rabbitmq.E495BB49CC4BBE5B.gpg
+
+# Community mirror of Cloudsmith: RabbitMQ repository
+curl -1sLf https://github.com/rabbitmq/signing-keys/releases/download/3.0/cloudsmith.rabbitmq-server.9F4587F226208342.key | \
+    gpg --dearmor -o /usr/share/keyrings/rabbitmq.9F4587F226208342.gpg
+
+log_message "Adding official RabbitMQ 4.0 APT repositories..."
+tee /etc/apt/sources.list.d/rabbitmq.list <<EOF
+# Provides modern Erlang/OTP releases
+deb [arch=amd64 signed-by=/usr/share/keyrings/rabbitmq.E495BB49CC4BBE5B.gpg] https://ppa1.rabbitmq.com/rabbitmq/rabbitmq-erlang/deb/ubuntu $UBUNTU_CODENAME main
+deb-src [signed-by=/usr/share/keyrings/rabbitmq.E495BB49CC4BBE5B.gpg] https://ppa1.rabbitmq.com/rabbitmq/rabbitmq-erlang/deb/ubuntu $UBUNTU_CODENAME main
+
+# Provides RabbitMQ
+deb [arch=amd64 signed-by=/usr/share/keyrings/rabbitmq.9F4587F226208342.gpg] https://ppa1.rabbitmq.com/rabbitmq/rabbitmq-server/deb/ubuntu $UBUNTU_CODENAME main
+deb-src [signed-by=/usr/share/keyrings/rabbitmq.9F4587F226208342.gpg] https://ppa1.rabbitmq.com/rabbitmq/rabbitmq-server/deb/ubuntu $UBUNTU_CODENAME main
+EOF
+
+# Update package lists with retries
+log_message "Updating package lists..."
+for i in {1..3}; do
+    if apt-get update -y; then
+        break
+    else
+        log_message "Package update attempt $i failed, retrying..."
+        sleep 10
+    fi
+done
+
+# Install Erlang 26 (required for RabbitMQ 4.0)
+log_message "Installing Erlang 26..."
+apt-get install -y \
+    erlang-base \
+    erlang-asn1 \
+    erlang-crypto \
+    erlang-eldap \
+    erlang-ftp \
+    erlang-inets \
+    erlang-mnesia \
+    erlang-os-mon \
+    erlang-parsetools \
+    erlang-public-key \
+    erlang-runtime-tools \
+    erlang-snmp \
+    erlang-ssl \
+    erlang-syntax-tools \
+    erlang-tftp \
+    erlang-tools \
+    erlang-xmerl
+
+# Verify Erlang version
+log_message "Verifying Erlang installation..."
+ERLANG_RAW_VERSION=$(erl -eval 'erlang:display(erlang:system_info(otp_release)), halt().' -noshell 2>/dev/null || echo "unknown")
+ERLANG_VERSION=$(echo "$ERLANG_RAW_VERSION" | sed 's/"//g') # Removes quotes
+log_message "Installed Erlang version: $ERLANG_VERSION"
+
+if [[ "$ERLANG_VERSION" < "26" ]]; then
+    log_message "ERROR: Erlang version $ERLANG_VERSION is too old for RabbitMQ 4.0. Requires Erlang 26+"
+    exit 1
+fi
+
+# Install RabbitMQ server
+log_message "Installing RabbitMQ server..."
+apt-get install -y rabbitmq-server
+
+# Verify RabbitMQ version
+RABBITMQ_VERSION=$(dpkg -l | grep rabbitmq-server | awk '{print $3}' || echo "unknown")
+log_message "Installed RabbitMQ version: $RABBITMQ_VERSION"
+
+# Enable and start RabbitMQ service
+log_message "Enabling and starting RabbitMQ service..."
+systemctl enable rabbitmq-server
+systemctl start rabbitmq-server
+
+# Wait for RabbitMQ to start with extended timeout for cloud environments
+log_message "Waiting for RabbitMQ to start..."
+timeout=60
+while ! rabbitmqctl status >/dev/null 2>&1 && [[ $timeout -gt 0 ]]; do
+    sleep 2
+    ((timeout-=2))
+    if [[ $((timeout % 10)) -eq 0 ]]; then
+        log_message "Still waiting for RabbitMQ... ($timeout seconds remaining)"
+    fi
+done
+
+if [[ $timeout -eq 0 ]]; then
+    log_message "ERROR: RabbitMQ failed to start within 60 seconds"
+    systemctl status rabbitmq-server || true
+    journalctl -u rabbitmq-server --no-pager -l || true
+    exit 1
+fi
+
+# Enable management plugin
+log_message "Enabling management plugin..."
+rabbitmq-plugins enable rabbitmq_management
+
+# Wait for management plugin to be ready
+log_message "Waiting for management plugin to be ready..."
+sleep 10
+
+# Create administrative user
+log_message "Creating administrative user: $RABBITMQ_USERNAME"
+if rabbitmqctl list_users | grep -q "^$RABBITMQ_USERNAME"; then
+    log_message "User $RABBITMQ_USERNAME already exists, updating password..."
+    rabbitmqctl change_password "$RABBITMQ_USERNAME" "$RABBITMQ_PASSWORD"
+else
+    rabbitmqctl add_user "$RABBITMQ_USERNAME" "$RABBITMQ_PASSWORD"
+fi
+
+rabbitmqctl set_user_tags "$RABBITMQ_USERNAME" administrator
+rabbitmqctl set_permissions -p / "$RABBITMQ_USERNAME" ".*" ".*" ".*"
+
+# Secure guest account
+log_message "Securing guest account..."
+RANDOM_PASSWORD=$(openssl rand -base64 32)
+rabbitmqctl change_password guest "$RANDOM_PASSWORD"
+rabbitmqctl clear_permissions -p / guest
+
+# Configure RabbitMQ for production use
+log_message "Applying production configurations..."
+
+# Create RabbitMQ configuration file
+cat > /etc/rabbitmq/rabbitmq.conf << EOF
+# RabbitMQ Configuration for Production
+loopback_users.guest = false
+listeners.tcp.default = 5672
+management.tcp.port = 15672
+
+# Memory and disk thresholds
+vm_memory_high_watermark.relative = 0.6
+disk_free_limit.absolute = 1GB
+
+# Logging
+log.file.level = info
+log.console = false
+log.console.level = info
+
+# Connection and channel limits
+channel_max = 2048
+connection_max = 1024
+
+# Message TTL
+default_vhost = /
+default_user = $RABBITMQ_USERNAME
+default_pass = $RABBITMQ_PASSWORD
+
+# Security
+auth_mechanisms.1 = PLAIN
+auth_mechanisms.2 = AMQPLAIN
+EOF
+
+# Restart RabbitMQ to apply configuration
+log_message "Restarting RabbitMQ to apply configuration..."
+systemctl restart rabbitmq-server
+
+# Wait for restart
+sleep 15
+
+# Final verification
+log_message "Performing final verification..."
+if systemctl is-active --quiet rabbitmq-server; then
+    log_message "RabbitMQ service is running successfully"
+else
+    log_message "ERROR: RabbitMQ service is not running after restart"
+    systemctl status rabbitmq-server || true
+    exit 1
+fi
+
+# Get instance metadata for logging
+INSTANCE_ID=$(curl -s http://169.254.169.254/latest/meta-data/instance-id 2>/dev/null || echo "unknown")
+LOCAL_IP=$(curl -s http://169.254.169.254/latest/meta-data/local-ipv4 2>/dev/null || echo "unknown")
+PUBLIC_IP=$(curl -s http://169.254.169.254/latest/meta-data/public-ipv4 2>/dev/null || echo "none")
+
+# Create installation summary
+log_message "=== RabbitMQ Installation Summary ==="
+log_message "Instance ID: $INSTANCE_ID"
+log_message "Local IP: $LOCAL_IP"
+log_message "Public IP: $PUBLIC_IP"
+log_message "RabbitMQ Version: $RABBITMQ_VERSION"
+log_message "Erlang Version: $ERLANG_VERSION"
+log_message "Service Status: $(systemctl is-active rabbitmq-server)"
+log_message "Management UI: http://$LOCAL_IP:15672"
+if [[ "$PUBLIC_IP" != "none" ]]; then
+    log_message "Management UI (Public): http://$PUBLIC_IP:15672"
+fi
+log_message "Admin Username: $RABBITMQ_USERNAME"
+log_message "Installation completed at: $(date)"
+
+# Write status to a file that can be checked by Terraform
+echo "SUCCESS" > /var/log/rabbitmq-install-status
+echo "$RABBITMQ_VERSION" > /var/log/rabbitmq-version
+
+log_message "RabbitMQ 4.0 installation completed successfully!"
+log_message "Check status with: sudo systemctl status rabbitmq-server"
+log_message "View logs with: sudo journalctl -u rabbitmq-server -f"
+log_message "Installation log available at: $LOG_FILE"

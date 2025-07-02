@@ -1,0 +1,14 @@
+#!/bin/bash
+
+sudo apt update && sudo apt upgrade -y
+sudo apt install -y git awscli zip
+
+wget https://packages.microsoft.com/config/ubuntu/$(lsb_release -rs)/packages-microsoft-prod.deb -O packages-microsoft-prod.deb
+dpkg -i packages-microsoft-prod.deb
+rm packages-microsoft-prod.deb
+
+apt update && sudo apt install -y dotnet-sdk-9.0
+apt update && sudo apt install -y dotnet-sdk-8.0
+
+# Create benchmark results directory
+mkdir -p /home/ubuntu/benchmark-results

@@ -1,0 +1,3 @@
+[submodule "ArmoniK.Core"]
+	path = ArmoniK.Core
+	url = https://github.com/aneoconsulting/ArmoniK.Core

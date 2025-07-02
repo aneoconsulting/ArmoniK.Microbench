@@ -1,0 +1,28 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BenchmoniK", "BenchmoniK\BenchmoniK.csproj", "{FF94E651-0A22-43B9-ADF2-CAA599A55441}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ArmoniK.Core.Base", "..\ArmoniK.Core\Base\src\ArmoniK.Core.Base.csproj", "{46739659-8C4C-4226-9C3D-1322D90C14D3}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ArmoniK.Core.Utils", "..\ArmoniK.Core\Utils\src\ArmoniK.Core.Utils.csproj", "{629C6ADA-6F76-458B-9421-81A45A8320A0}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{FF94E651-0A22-43B9-ADF2-CAA599A55441}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FF94E651-0A22-43B9-ADF2-CAA599A55441}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FF94E651-0A22-43B9-ADF2-CAA599A55441}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FF94E651-0A22-43B9-ADF2-CAA599A55441}.Release|Any CPU.Build.0 = Release|Any CPU
+		{46739659-8C4C-4226-9C3D-1322D90C14D3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{46739659-8C4C-4226-9C3D-1322D90C14D3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{46739659-8C4C-4226-9C3D-1322D90C14D3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{46739659-8C4C-4226-9C3D-1322D90C14D3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{629C6ADA-6F76-458B-9421-81A45A8320A0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{629C6ADA-6F76-458B-9421-81A45A8320A0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{629C6ADA-6F76-458B-9421-81A45A8320A0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{629C6ADA-6F76-458B-9421-81A45A8320A0}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal
