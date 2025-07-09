@@ -8,6 +8,10 @@ locals {
   username = try(coalesce(var.rabbitmq_username), random_string.username.result)
   password = try(coalesce(var.rabbitmq_password), random_password.password.result)
 
+  tags = merge(var.additional_tags, {
+    Module = "RabbitMQ-EC2"
+  })
+
   common_tags = {
     Name       = "RabbitMQ Benchmarks"
     Deployment = "${var.prefix}-armonik-microbench"
@@ -57,7 +61,7 @@ resource "aws_security_group" "rabbitmq_sg" {
     cidr_blocks = ["0.0.0.0/0"]
   }
 
-  tags = local.common_tags
+  tags = local.tags
 }
 
 data "aws_ami" "ubuntu_2204" {
@@ -87,14 +91,14 @@ resource "aws_instance" "rabbitmq" {
     delete_on_termination = true
     encrypted             = true
     
-    tags = local.common_tags
+    tags = local.tags
   }
 
 
   # User data replacement requires instance replacement
   user_data_replace_on_change = true
 
-  tags = local.common_tags
+  tags = local.tags
 } 
 
 
@@ -105,9 +109,7 @@ resource "aws_cloudwatch_log_group" "rabbitmq_logs" {
   name              = "/aws/ec2/${var.prefix}-rabbitmq"
   retention_in_days = 30
 
-  tags = {
-    Name = "${var.prefix}-rabbitmq-logs"
-  }
+  tags = local.tags
 }
 
 # Optional: CloudWatch agent configuration for log shipping
@@ -115,6 +117,7 @@ resource "aws_ssm_parameter" "cloudwatch_config" {
   count = var.enable_cloudwatch_logs ? 1 : 0
   name  = "/aws/ec2/${var.prefix}/cloudwatch-config"
   type  = "String"
+  tags = local.tags
   value = jsonencode({
     logs = {
       logs_collected = {

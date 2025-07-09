@@ -15,6 +15,12 @@ variable "prefix" {
   type        = string
 }
 
+variable "additional_tags" {
+  description = "Additional tags specific to this module"
+  type        = map(string)
+  default     = {}
+}
+
 # Redis variables
 variable "node_type" {
   description = "Node type to use for the Redis cluster"

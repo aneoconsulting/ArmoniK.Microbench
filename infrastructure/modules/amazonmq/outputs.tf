@@ -1,10 +1,18 @@
+locals {
+  # Find the AMQP+SSL endpoint for ActiveMQ
+  selected_endpoint = var.engine_type == "ActiveMQ" ? [
+    for endpoint in aws_mq_broker.mq.instances[0].endpoints : endpoint
+    if length(regexall(":5671$", endpoint)) > 0
+  ][0] : aws_mq_broker.mq.instances[0].endpoints[0]
+}
+
 resource "local_file" "amq_benchmark" {
   filename = "${path.root}/benchmark_configs/${lower(var.engine_type)}.json"
   content = jsonencode({
     "Component"       = "${var.engine_type}"
-    "Amqp:Endpoint"   = aws_mq_broker.mq.instances[0].endpoints[0]
-    "Amqp:Host"       = trim(split(":", aws_mq_broker.mq.instances[0].endpoints[0])[1], "//")
-    "Amqp:Port"       = tonumber(split(":", aws_mq_broker.mq.instances[0].endpoints[0])[2])
+    "Amqp:Endpoint"   = local.selected_endpoint
+    "Amqp:Host"       = trim(split(":", local.selected_endpoint)[1], "//")
+    "Amqp:Port"       = tonumber(split(":", local.selected_endpoint)[2])
     "Amqp:Scheme"     = "AMQPS"
     "Amqp:User"       = local.username
     "Amqp:Password"   = local.password

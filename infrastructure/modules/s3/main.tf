@@ -4,6 +4,10 @@ locals {
     Name       = "S3 Benchmarks"
     Deployment = "${var.prefix}-armonik-microbench"
   }
+
+  tags = merge(var.additional_tags, {
+    Module = "S3"
+  })
 }
 
 provider "aws" {
@@ -22,7 +26,7 @@ resource "random_string" "bucket_suffix" {
 resource "aws_s3_bucket" "s3_benchmark" {
   bucket = "${var.prefix}-general-${random_string.bucket_suffix.result}"
   force_destroy = true
-  tags = local.common_tags
+  tags = local.tags
 }
 
 

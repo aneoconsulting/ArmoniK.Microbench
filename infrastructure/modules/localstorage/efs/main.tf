@@ -1,9 +1,14 @@
 locals {
   config_file_path = coalesce(var.config_file_path, "${path.root}/benchmark_configs/efs.json")
-  common_tags = {
-    Name       = "EFS Benchmarks"
-    Deployment = "${var.prefix}-armonik-microbench"
-  }
+  # common_tags = {
+  #   Name       = "EFS Benchmarks"
+  #   Deployment = "${var.prefix}-armonik-microbench"
+  # }
+
+  tags = merge(var.additional_tags, {
+    Module = "EFS"
+  })
+
 }
 
 provider "aws" {
@@ -13,7 +18,7 @@ provider "aws" {
 
 resource "aws_efs_file_system" "benchmark_fs" {
   performance_mode = "generalPurpose"
-  tags             = local.common_tags
+  tags             = local.tags
 }
 
 resource "aws_security_group" "efs_sg" {
@@ -35,7 +40,7 @@ resource "aws_security_group" "efs_sg" {
     cidr_blocks = ["0.0.0.0/0"]
   }
 
-  tags = local.common_tags
+  tags = local.tags
 }
 
 resource "aws_efs_mount_target" "benchmark_fs_target" {

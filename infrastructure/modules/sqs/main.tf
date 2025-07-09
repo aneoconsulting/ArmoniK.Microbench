@@ -2,6 +2,10 @@ locals {
   config_file_path = coalesce(var.config_file_path, "${path.root}/benchmark_configs/sqs.json")
   service_url = "https://sqs.${var.region}.amazonaws.com"
   account_id  = data.aws_caller_identity.current.account_id
+
+  tags = merge(var.additional_tags, {
+    Module = "SQS"
+  })
 }
 
 data "aws_caller_identity" "current" {}

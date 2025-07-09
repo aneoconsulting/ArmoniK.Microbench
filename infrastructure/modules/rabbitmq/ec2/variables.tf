@@ -15,6 +15,12 @@ variable "prefix" {
   type        = string
 }
 
+variable "additional_tags" {
+  description = "Additional tags specific to this module"
+  type        = map(string)
+  default     = {}
+}
+
 variable "network_config" {
   type = object({
     vpc_id    = string
@@ -76,13 +82,6 @@ variable "backup_retention_days" {
   description = "Number of days to retain automated backups"
   type        = number
   default     = 7
-}
-
-# TODO: Add this to the other modules and perhaps use it??
-variable "tags" {
-  description = "Additional tags to apply to all resources"
-  type        = map(string)
-  default     = {}
 }
 
 # Output

@@ -8,7 +8,6 @@ using Microsoft.Extensions.DependencyInjection;
 
 public class ActivemqThroughputBenchmark : BaseThroughputBenchmark
 {
-    private IServiceProvider _serviceProvider = null!;
 
     [GlobalSetup]
     public async Task GlobalSetup()
@@ -22,12 +21,11 @@ public class ActivemqThroughputBenchmark : BaseThroughputBenchmark
             ["Amqp:LinkCredit"] = "1",
             ["Amqp:PartitionId"] = "benchmonik",
             ["Amqp:AllowInsecureTls"] = "true",
-            ["Amqp:Ssl"] = "true",
+            ["Amqp:Ssl"] = "false",
         };
         configuration.AddInMemoryCollection(benchmarkParams!);
 
         string adapterPath = ConfigUtils.GetAdapterDllPath("Amqp");
-        _serviceProvider = ConfigUtils.BuildServiceProvider(configuration, adapterPath);
 
         // Create one client pair for each concurrent runner
         _pullQueueClients.Clear();
@@ -35,8 +33,10 @@ public class ActivemqThroughputBenchmark : BaseThroughputBenchmark
         
         for (int i = 0; i < NumConcurrentRunners; i++)
         {
-            var pullQueue = _serviceProvider.GetRequiredService<IPullQueueStorage>();
-            var pushQueue = _serviceProvider.GetRequiredService<IPushQueueStorage>();
+            var serviceProvider = ConfigUtils.BuildServiceProvider(configuration, adapterPath);
+            
+            var pullQueue = serviceProvider.GetRequiredService<IPullQueueStorage>();
+            var pushQueue = serviceProvider.GetRequiredService<IPushQueueStorage>();
             
             await pullQueue.Init(CancellationToken.None);
             await pushQueue.Init(CancellationToken.None);

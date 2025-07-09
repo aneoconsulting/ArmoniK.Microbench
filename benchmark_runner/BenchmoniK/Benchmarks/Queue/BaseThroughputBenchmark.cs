@@ -8,7 +8,7 @@ using BenchmoniK.Utils;
 using System.Collections.Concurrent;
 
 [MemoryDiagnoser]
-[SimpleJob(RunStrategy.Monitoring, RuntimeMoniker.Net80, launchCount: 1, warmupCount: 5, iterationCount: 12)]
+[SimpleJob(RunStrategy.Monitoring, RuntimeMoniker.Net80, launchCount: 1, warmupCount: 1, iterationCount: 5)]
 [Config(typeof(BenchmarkDotNetConfig))]
 public abstract class BaseThroughputBenchmark
 {
@@ -18,14 +18,17 @@ public abstract class BaseThroughputBenchmark
     
     protected readonly ConcurrentBag<IQueueMessageHandler> _pulledMessages = new();
     protected readonly string _partitionName = "benchmonik";
-    
+
     // Maximum messages to pull in a single operation
-    private const int MaxMessagesPerPull = 10;
-    
+    [Params(1, 10)]
+    // [Params(10)]
+    public int MaxMessagesPerOperation { get; set; }
+
     [Params(100)]
     public int NumMessages { get; set; }
     
-    [Params(5, 10, 20)] 
+    [Params(1, 5, 25, 50, 75)] //100, 125, 150, 175, 200)] 
+    // [Params(10)] 
     public int NumConcurrentRunners { get; set; }
 
     [IterationSetup(Target = nameof(PullMessagesNack))]
@@ -57,7 +60,7 @@ public abstract class BaseThroughputBenchmark
             
             pullTasks.Add(Task.Run(async () =>
             {
-                await PullMessagesInChunks(_partitionName,pullQueue, messagesToPull, QueueMessageStatus.Cancelled);
+                await PullMessagesInChunks(_partitionName,pullQueue, messagesToPull, MaxMessagesPerOperation, QueueMessageStatus.Cancelled);
             }));
         }
         
@@ -93,7 +96,7 @@ public abstract class BaseThroughputBenchmark
             
             pullTasks.Add(Task.Run(async () =>
             {
-                await PullMessagesInChunks(_partitionName,pullQueue, messagesToPull, QueueMessageStatus.Processed);
+                await PullMessagesInChunks(_partitionName,pullQueue, messagesToPull, MaxMessagesPerOperation, QueueMessageStatus.Processed);
             }));
         }
         
@@ -118,7 +121,7 @@ public abstract class BaseThroughputBenchmark
             
             pushTasks.Add(Task.Run(async () =>
             {
-                await pushQueue.PushMessagesAsync(messages, _partitionName);
+                await PushMessagesInChunks(pushQueue, messages, _partitionName, MaxMessagesPerOperation);
             }));
         }
         
@@ -132,7 +135,7 @@ public abstract class BaseThroughputBenchmark
         var pullQueue = _pullQueueClients[0];
         int totalMessagesToDelete = NumConcurrentRunners * NumMessages;
         
-        PullMessagesInChunks(_partitionName, pullQueue, totalMessagesToDelete, QueueMessageStatus.Cancelled).GetAwaiter().GetResult();
+        PullMessagesInChunks(_partitionName, pullQueue, totalMessagesToDelete, MaxMessagesPerOperation, QueueMessageStatus.Cancelled).GetAwaiter().GetResult();
     }
 
     private static IEnumerable<MessageData> CreateMessages(int runnerIdx, int messageCount)
@@ -144,10 +147,31 @@ public abstract class BaseThroughputBenchmark
         ));
     }
 
+    private static async Task PushMessagesInChunks(
+        IPushQueueStorage pushQueue,
+        IEnumerable<MessageData> messages,
+        string partitionName,
+        int maxMessagesPerPush)
+    {
+        var messagesList = messages.ToList();
+        int messagesPushed = 0;
+        int totalMessages = messagesList.Count;
+        
+        while (messagesPushed < totalMessages)
+        {
+            int messagesInThisChunk = Math.Min(maxMessagesPerPush, totalMessages - messagesPushed);
+            var chunk = messagesList.Skip(messagesPushed).Take(messagesInThisChunk);
+            
+            await pushQueue.PushMessagesAsync(chunk, partitionName);
+            messagesPushed += messagesInThisChunk;
+        }
+    }
+
     private static async Task PullMessagesInChunks(
         string partitionName,
         IPullQueueStorage pullQueue, 
         int totalMessagesToPull, 
+        int MaxMessagesPerOperation,
         QueueMessageStatus status)
     {
         int messagesPulled = 0;
@@ -155,7 +179,7 @@ public abstract class BaseThroughputBenchmark
         
         while (messagesPulled < totalMessagesToPull)
         {
-            int messagesInThisChunk = Math.Min(MaxMessagesPerPull, totalMessagesToPull - messagesPulled);
+            int messagesInThisChunk = Math.Min(MaxMessagesPerOperation, totalMessagesToPull - messagesPulled);
             var chunkHandlers = new List<IQueueMessageHandler>();
             
             await foreach (var qmh in pullQueue.PullMessagesAsync(partitionName,messagesInThisChunk))
@@ -203,7 +227,7 @@ public async Task PushThenPull()
         
         pushTasks.Add(Task.Run(async () =>
         {
-            await pushQueue.PushMessagesAsync(messages, _partitionName);
+            await PushMessagesInChunks(pushQueue, messages, _partitionName, MaxMessagesPerOperation);
         }));
     }
     
@@ -219,7 +243,7 @@ public async Task PushThenPull()
         
         pullTasks.Add(Task.Run(async () =>
         {
-            await PullMessagesInChunks(_partitionName, pullQueue, messagesToPull, QueueMessageStatus.Processed);
+            await PullMessagesInChunks(_partitionName, pullQueue, messagesToPull, MaxMessagesPerOperation, QueueMessageStatus.Processed);
         }));
     }
     
@@ -247,10 +271,10 @@ public async Task PushThenPullPerRunner()
         runnerTasks.Add(Task.Run(async () =>
         {
             // Push messages first
-            await pushQueue.PushMessagesAsync(messages, _partitionName);
+            await PushMessagesInChunks(pushQueue, messages, _partitionName, MaxMessagesPerOperation);
             
             // Then pull the same number of messages
-            await PullMessagesInChunks(_partitionName, pullQueue, messagesToPull, QueueMessageStatus.Processed);
+            await PullMessagesInChunks(_partitionName, pullQueue, messagesToPull, MaxMessagesPerOperation, QueueMessageStatus.Processed);
         }));
     }
     

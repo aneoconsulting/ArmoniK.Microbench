@@ -15,6 +15,12 @@ variable "prefix" {
   type        = string
 }
 
+variable "additional_tags" {
+  description = "Additional tags specific to this module"
+  type        = map(string)
+  default     = {}
+}
+
 variable "network_config" {
   type = object({
     vpc_id    = string

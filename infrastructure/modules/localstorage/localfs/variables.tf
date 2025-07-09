@@ -10,3 +10,8 @@ variable "config_file_path" {
 }
 
 # NOTE: Should I add prefix, region and profile (maintain homogeneity?)
+variable "additional_tags" {
+  description = "Additional tags specific to this module"
+  type        = map(string)
+  default     = {}
+}

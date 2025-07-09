@@ -16,6 +16,12 @@ variable "prefix" {
   default     = "benchmonik"
 }
 
+variable "additional_tags" {
+  description = "Additional tags specific to this module"
+  type        = map(string)
+  default     = {}
+}
+
 variable "benchmark_runner_role_id" {
   description = "Id of the role created in the benchmark runner"
   type        = string

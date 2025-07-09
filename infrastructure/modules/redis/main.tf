@@ -5,6 +5,10 @@ locals {
     Name       = "Redis Benchmarks"
     Deployment = "${var.prefix}-armonik-microbench"
   }
+
+  tags = merge(var.additional_tags, {
+    Module = "Reddis"
+  })
 }
 
 provider "aws" {
@@ -23,7 +27,7 @@ resource "aws_security_group" "redis_sg" {
     cidr_blocks = ["0.0.0.0/0"]  
   }
   
-  tags = local.common_tags
+  tags = local.tags
 }
 
 resource "aws_elasticache_cluster" "benchmonik_redis" {
@@ -38,5 +42,5 @@ resource "aws_elasticache_cluster" "benchmonik_redis" {
 
   security_group_ids   = [aws_security_group.redis_sg.id]  
 
-  tags = local.common_tags
+  tags = local.tags
 }

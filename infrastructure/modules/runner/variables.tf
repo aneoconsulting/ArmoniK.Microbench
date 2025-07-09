@@ -16,6 +16,12 @@ variable "prefix" {
   default     = "benchmark"
 }
 
+variable "additional_tags" {
+  description = "Additional tags specific to this module"
+  type        = map(string)
+  default     = {}
+}
+
 variable "instance_type" {
   description = "EC2 instance type for the benchmark host"
   type        = string

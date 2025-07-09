@@ -1,3 +1,5 @@
+using ArmoniK.Core.Base.DataStructures;
+
 namespace BenchmoniK.Benchmarks.Queue;
 
 using Microsoft.Extensions.Configuration;
@@ -8,7 +10,6 @@ using Microsoft.Extensions.DependencyInjection;
 
 public class RabbitmqThroughputBenchmark: BaseThroughputBenchmark
 {
-    private IServiceProvider _serviceProvider = null!;
     
     [GlobalSetup]
     public async Task GlobalSetup()
@@ -29,22 +30,27 @@ public class RabbitmqThroughputBenchmark: BaseThroughputBenchmark
         
         string adapterPath = ConfigUtils.GetAdapterDllPath("RabbitMQ");
 
-        _serviceProvider = ConfigUtils.BuildServiceProvider(configuration, adapterPath);
-
+        
         // Create one client pair for each concurrent runner
         _pullQueueClients.Clear();
         _pushQueueClients.Clear();
-        
+
         for (int i = 0; i < NumConcurrentRunners; i++)
         {
-            var pullQueue = _serviceProvider.GetRequiredService<IPullQueueStorage>();
-            var pushQueue = _serviceProvider.GetRequiredService<IPushQueueStorage>();
-            
+            var serviceProvider = ConfigUtils.BuildServiceProvider(configuration, adapterPath);
+
+            var pullQueue = serviceProvider.GetRequiredService<IPullQueueStorage>();
+            var pushQueue = serviceProvider.GetRequiredService<IPushQueueStorage>();
+
             await pullQueue.Init(CancellationToken.None);
             await pushQueue.Init(CancellationToken.None);
-            
+
             _pullQueueClients.Add(pullQueue);
             _pushQueueClients.Add(pushQueue);
+
+            // Small delay to avoid simultaneous queue declarations
+            await Task.Delay(Math.Min(i * 25, 1000)); 
+
         }
     }
 }

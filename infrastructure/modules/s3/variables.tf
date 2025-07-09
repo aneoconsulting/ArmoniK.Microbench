@@ -16,6 +16,12 @@ variable "prefix" {
   default     = "benchmonik"
 }
 
+variable "additional_tags" {
+  description = "Additional tags specific to this module"
+  type        = map(string)
+  default     = {}
+}
+
 variable "additional_s3_config" {
   description = "Additional S3 configuration options"
   type        = map(string)

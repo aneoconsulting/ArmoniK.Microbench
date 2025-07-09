@@ -10,7 +10,7 @@ using System.Collections.Concurrent;
 namespace BenchmoniK.Benchmarks.ObjectStorage;
 
 [MemoryDiagnoser]
-[SimpleJob(RunStrategy.Monitoring, RuntimeMoniker.Net80, launchCount: 1, warmupCount: 5, iterationCount: 12)]
+[SimpleJob(RunStrategy.Monitoring, RuntimeMoniker.Net80, launchCount: 1, warmupCount: 1, iterationCount: 12)]
 [Config(typeof(BenchmarkDotNetConfig))]
 public class BaseThroughputBenchmark
 {
@@ -24,15 +24,16 @@ public class BaseThroughputBenchmark
     // ---
     public static IEnumerable<(int, int)> TransferParameterSource => new[]
     {
-        (65536, 1048576),    // 64KB download, 1MB upload
-        (1048576, 5242880)     // 1MB download, 5MB upload
+        // (65536, 1048576),    // 64KB download, 1MB upload
+        // (1048576, 5242880)     // 1MB download, 5MB upload
+        (1048576, 5242880)
     };
 
     [ParamsSource(nameof(TransferParameterSource))]
     public (int ChunkDownloadSize, int ChunkUploadSize) TransferParameters { get; set; }
     
     // Found out about this really late, might be useful: https://github.com/timcassell/ProtoBenchmarkHelpers  
-    [Params(5, 10, 20)] 
+    [Params(5, 10)] 
     public int NumConcurrentRunners { get; set; }
     
     [Params(20)]  // Each runner will work with this many objects

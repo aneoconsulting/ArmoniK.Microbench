@@ -11,6 +11,10 @@ locals {
 
   deployment_machine_cidr = "${chomp(data.http.my_ip.body)}/32"
 
+  tags = merge(var.additional_tags, {
+    Module = "${lower(var.engine_type)}-AmazonMQ"
+  })
+
 }
 
 data "http" "my_ip" {
@@ -43,9 +47,7 @@ resource "aws_security_group" "amq_sg" {
     cidr_blocks = ["0.0.0.0/0"]
   }
 
-  tags = {
-    Name = "${lower(var.engine_type)}-broker-sg"
-  }
+  tags = local.tags
 }
 
 resource "aws_security_group_rule" "runner_to_amq_ingress_rule" {
@@ -129,11 +131,14 @@ resource "aws_mq_broker" "mq" {
     username = local.username
     password = local.password
   }
+
+  tags = local.tags
 }
 
 
 resource "aws_mq_configuration" "mq_configuration" {
   count          = var.engine_type == "ActiveMQ" ? 1 : 0
+  tags           = local.tags
   description    = "ArmoniK ActiveMQ Configuration"
   name           = var.broker_name
   engine_type    = var.engine_type

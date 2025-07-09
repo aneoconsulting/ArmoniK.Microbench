@@ -15,6 +15,12 @@ variable "prefix" {
   type        = string
 }
 
+variable "additional_tags" {
+  description = "Additional tags specific to this module"
+  type        = map(string)
+  default     = {}
+}
+
 variable "mq_username_override" {
   description = "ActiveMQ username"
   type        = string

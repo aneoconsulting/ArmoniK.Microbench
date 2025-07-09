@@ -12,10 +12,14 @@ locals {
     Deployment = "${var.prefix}-armonik-microbench"
   }
 
+  tags = merge(var.additional_tags, {
+    Module = "BenchmarkRunner"
+  })
+
   base_userdata = templatefile("${path.module}/user_data.sh.tftpl", {})
 
   inner_efs_config = <<-EOF
-
+    ## EFS SPECIFIC 
     # Install NFS client for EFS
     sudo apt-get install -y nfs-common
 
@@ -104,7 +108,7 @@ resource "aws_security_group" "benchmark_sg" {
     cidr_blocks = ["0.0.0.0/0"]
   }
 
-  tags = local.common_tags
+  tags = local.tags
 }
 
 # Ubuntu 22.04 LTS AMI
@@ -132,7 +136,8 @@ resource "aws_instance" "benchmark_instance" {
   root_block_device {
     volume_size = 40 # More space for benchmarks and artifacts
     volume_type = var.volume_type
+    tags = local.tags
   }
 
-  tags = local.common_tags
+  tags = local.tags
 }

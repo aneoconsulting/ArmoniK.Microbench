@@ -13,7 +13,7 @@ public class S3Benchmark : BaseBenchmark
     [Params(1, 4, 8)] public int DegreeOfParallelism { get; set; }
 
     // Object sizes to test
-    [Params(1024, 1048576, 2 * 10485760, 104857600)] // 1KB, 1MB, 20MB, 100MB
+    [Params(1024, 1048576, 2 * 10485760, 5 * 10485760)] // 1KB, 1MB, 20MB, 100MB
     public int ObjectSizeBytes { get; set; }
 
 
