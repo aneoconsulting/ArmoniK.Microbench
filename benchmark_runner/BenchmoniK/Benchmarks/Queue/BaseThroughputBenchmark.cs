@@ -6,9 +6,14 @@ using BenchmarkDotNet.Engines;
 using BenchmarkDotNet.Jobs;
 using BenchmoniK.Utils;
 using System.Collections.Concurrent;
+using BenchmarkDotNet.Diagnostics.dotTrace;
+using BenchmarkDotNet.Diagnostics.dotMemory;
 
+// [DotMemoryDiagnoser] // Can't have these both be active/attached to the same process at the same time
+[DotTraceDiagnoser]
 [MemoryDiagnoser]
-[SimpleJob(RunStrategy.Monitoring, RuntimeMoniker.Net80, launchCount: 1, warmupCount: 1, iterationCount: 5)]
+[StopOnFirstError]
+[SimpleJob(RunStrategy.Monitoring, RuntimeMoniker.Net80, launchCount: 1, warmupCount: 1, iterationCount: 2)] // TODO: Change this back to 5 !! Less iterations for dotMemory
 [Config(typeof(BenchmarkDotNetConfig))]
 public abstract class BaseThroughputBenchmark
 {
@@ -27,7 +32,7 @@ public abstract class BaseThroughputBenchmark
     [Params(100)]
     public int NumMessages { get; set; }
     
-    [Params(1, 5, 25, 50, 75)] //100, 125, 150, 175, 200)] 
+    [Params(1, 5, 25, 50, 75, 100)] //100, 125, 150, 175, 200)] 
     // [Params(10)] 
     public int NumConcurrentRunners { get; set; }
 

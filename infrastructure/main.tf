@@ -97,41 +97,41 @@ module "sqs_queue" {
   benchmark_runner_role_id = module.benchmark_runner.benchmark_runner_role_id
 }
 
-module "rabbitmq-amq" {
-  source                 = "./modules/amazonmq"
-  prefix                 = var.prefix
-  region                 = var.region
-  profile                = var.profile
-  additional_tags        = local.common_tags
-  mq_username_override   = "sleeprabbitmqbench"
-  mq_password_override   = "sleeprabbitmqbench"
-  network_config         = local.network_config
-  host_instance_type     = "mq.m5.4xlarge"
-  benchmark_runner_sg_id = module.benchmark_runner.benchmark_runner_sg_id
-}
+# module "rabbitmq-amq" {
+#   source                 = "./modules/amazonmq"
+#   prefix                 = var.prefix
+#   region                 = var.region
+#   profile                = var.profile
+#   additional_tags        = local.common_tags
+#   mq_username_override   = "sleeprabbitmqbench"
+#   mq_password_override   = "sleeprabbitmqbench"
+#   network_config         = local.network_config
+#   host_instance_type     = "mq.m5.4xlarge"
+#   benchmark_runner_sg_id = module.benchmark_runner.benchmark_runner_sg_id
+# }
 
-module "rabbitmq-ec2" {
-  source           = "./modules/rabbitmq/ec2"
-  prefix           = var.prefix # TODO: Group these into an object, add to locals, makes it easier to read.
-  region           = var.region
-  profile          = var.profile
-  additional_tags  = local.common_tags
-  network_config   = local.network_config
-  instance_type    = "m5.4xlarge"
-  config_file_path = "${path.root}/benchmark_configs/rabbitmq-ec2.json"
-}
+# module "rabbitmq-ec2" {
+#   source           = "./modules/rabbitmq/ec2"
+#   prefix           = var.prefix # TODO: Group these into an object, add to locals, makes it easier to read.
+#   region           = var.region
+#   profile          = var.profile
+#   additional_tags  = local.common_tags
+#   network_config   = local.network_config
+#   instance_type    = "m5.4xlarge"
+#   config_file_path = "${path.root}/benchmark_configs/rabbitmq-ec2.json"
+# }
 
-module "activemq" {
-  source                 = "./modules/amazonmq"
-  prefix                 = var.prefix
-  region                 = var.region
-  profile                = var.profile
-  additional_tags        = local.common_tags
-  mq_username_override   = "sleepactivemqbench"
-  mq_password_override   = "sleepactivemqbench"
-  host_instance_type     = "mq.m5.4xlarge"
-  engine_type            = "ActiveMQ"
-  engine_version         = "5.18"
-  network_config         = local.network_config
-  benchmark_runner_sg_id = module.benchmark_runner.benchmark_runner_sg_id
-}
+# module "activemq" {
+#   source                 = "./modules/amazonmq"
+#   prefix                 = var.prefix
+#   region                 = var.region
+#   profile                = var.profile
+#   additional_tags        = local.common_tags
+#   mq_username_override   = "sleepactivemqbench"
+#   mq_password_override   = "sleepactivemqbench"
+#   host_instance_type     = "mq.m5.4xlarge"
+#   engine_type            = "ActiveMQ"
+#   engine_version         = "5.18"
+#   network_config         = local.network_config
+#   benchmark_runner_sg_id = module.benchmark_runner.benchmark_runner_sg_id
+# }
