@@ -8,10 +8,13 @@ locals {
     vpc_id    = module.vpc.vpc_id
     subnet_id = module.vpc.public_subnets[0]
   }
-  common_tags = {
-    application          = "Microbenchmarks"
-    "deployment version" = "${var.prefix}-armonik-microbench"
-  }
+  common_tags = merge(
+    {
+      application          = "Microbenchmarks"
+      "deployment version" = "${var.prefix}-armonik-microbench"
+    },
+    var.additional_common_tags
+  )
 }
 
 # SSH Keys
@@ -39,7 +42,6 @@ module "vpc" {
 }
 
 # Benchmark Runners
-
 module "benchmark_runner" {
   source                        = "./modules/runner"
   region                        = var.region
@@ -48,47 +50,52 @@ module "benchmark_runner" {
   network_config                = local.network_config
   benchmark_results_bucket_name = var.results_bucket_name
   ssh_key_name                  = aws_key_pair.benchmark_key.key_name
-  instance_type                 = "c7a.8xlarge"
+  instance_type                 = var.benchmark_runner != null ? var.benchmark_runner.instance_type : "c7a.8xlarge"
 }
 
-# Benchmarks to run
+# Storage Benchmarks
 
-# module "localstorage_benchmark" {
-#   source       = "./modules/localstorage/localfs"
-#   storage_path = "/localstorage_benchtemp"
-# }
+module "localstorage_benchmark" {
+  count        = var.localstorage_benchmark != null ? 1 : 0
+  source       = "./modules/localstorage/localfs"
+  storage_path = "/localstorage_benchtemp"
+}
 
-# module "redis_benchmark" {
-#   source          = "./modules/redis"
-#   prefix          = var.prefix
-#   region          = var.region
-#   profile         = var.profile
-#   additional_tags = local.common_tags
-#   node_type       = "cache.m5.xlarge"
-# }
+module "redis_benchmark" {
+  count           = var.redis_benchmark != null ? 1 : 0
+  source          = "./modules/redis"
+  prefix          = var.prefix
+  region          = var.region
+  profile         = var.profile
+  additional_tags = local.common_tags
+  node_type       = var.redis_benchmark.instance_type
+}
 
-# module "efs_benchmark" {
-#   source                     = "./modules/localstorage/efs"
-#   prefix                     = var.prefix
-#   region                     = var.region
-#   profile                    = var.profile
-#   additional_tags            = local.common_tags
-#   network_config             = local.network_config
-#   instance_security_group_id = module.benchmark_runner.benchmark_runner_sg_id
-# }
+module "efs_benchmark" {
+  count                      = var.efs_benchmark != null ? 1 : 0
+  source                     = "./modules/localstorage/efs"
+  prefix                     = var.prefix
+  region                     = var.region
+  profile                    = var.profile
+  additional_tags            = local.common_tags
+  network_config             = local.network_config
+  instance_security_group_id = module.benchmark_runner.benchmark_runner_sg_id
+}
 
-# module "s3_benchmark" {
-#   source                   = "./modules/s3"
-#   prefix                   = var.prefix
-#   region                   = var.region
-#   profile                  = var.profile
-#   additional_tags          = local.common_tags
-#   benchmark_runner_role_id = module.benchmark_runner.benchmark_runner_role_id
-# }
+module "s3_benchmark" {
+  count                    = var.s3_benchmark != null ? 1 : 0
+  source                   = "./modules/s3"
+  prefix                   = var.prefix
+  region                   = var.region
+  profile                  = var.profile
+  additional_tags          = local.common_tags
+  benchmark_runner_role_id = module.benchmark_runner.benchmark_runner_role_id
+}
 
-## Queue:
+# Queue Benchmarks
 
 module "sqs_queue" {
+  count                    = var.sqs_benchmark != null ? 1 : 0
   source                   = "./modules/sqs"
   prefix                   = var.prefix
   region                   = var.region
@@ -97,39 +104,42 @@ module "sqs_queue" {
   benchmark_runner_role_id = module.benchmark_runner.benchmark_runner_role_id
 }
 
-module "rabbitmq-amq" {
+module "rabbitmq_amq" {
+  count                  = var.rabbitmq_amq_benchmark != null ? 1 : 0
   source                 = "./modules/amazonmq"
   prefix                 = var.prefix
   region                 = var.region
   profile                = var.profile
   additional_tags        = local.common_tags
-  mq_username_override   = "sleeprabbitmqbench"
-  mq_password_override   = "sleeprabbitmqbench"
+  mq_username_override   = var.rabbitmq_amq_benchmark.username_override
+  mq_password_override   = var.rabbitmq_amq_benchmark.password_override
   network_config         = local.network_config
-  host_instance_type     = "mq.m5.4xlarge"
+  host_instance_type     = var.rabbitmq_amq_benchmark.instance_type
   benchmark_runner_sg_id = module.benchmark_runner.benchmark_runner_sg_id
 }
 
-module "rabbitmq-ec2" {
+module "rabbitmq_ec2" {
+  count            = var.rabbitmq_ec2_benchmark != null ? 1 : 0
   source           = "./modules/rabbitmq/ec2"
-  prefix           = var.prefix # TODO: Group these into an object, add to locals, makes it easier to read.
+  prefix           = var.prefix
   region           = var.region
   profile          = var.profile
   additional_tags  = local.common_tags
   network_config   = local.network_config
-  instance_type    = "m5.4xlarge"
+  instance_type    = var.rabbitmq_ec2_benchmark.instance_type
   config_file_path = "${path.root}/benchmark_configs/rabbitmq-ec2.json"
 }
 
 module "activemq" {
+  count                  = var.activemq_benchmark != null ? 1 : 0
   source                 = "./modules/amazonmq"
   prefix                 = var.prefix
   region                 = var.region
   profile                = var.profile
   additional_tags        = local.common_tags
-  mq_username_override   = "sleepactivemqbench"
-  mq_password_override   = "sleepactivemqbench"
-  host_instance_type     = "mq.m5.4xlarge"
+  mq_username_override   = var.activemq_benchmark.username_override
+  mq_password_override   = var.activemq_benchmark.password_override
+  host_instance_type     = var.activemq_benchmark.instance_type
   engine_type            = "ActiveMQ"
   engine_version         = "5.18"
   network_config         = local.network_config
