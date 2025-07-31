@@ -88,7 +88,12 @@ class Program
                         }
 
                         break;
-                    
+                    case "--attach-dottrace":
+                        Environment.SetEnvironmentVariable("ENABLE_PERFORMANCE_PROFILING", "1");
+                        break;
+                    case "--attach-dotmemory":
+                        Environment.SetEnvironmentVariable("ENABLE_MEMORY_PROFILING", "1");
+                        break;
                     case "--profile":
                         awsProfile = args[++i];
                         break;
