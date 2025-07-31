@@ -11,11 +11,6 @@ locals {
 
 }
 
-provider "aws" {
-  region  = var.region
-  profile = var.profile
-}
-
 resource "aws_efs_file_system" "benchmark_fs" {
   performance_mode = "generalPurpose"
   tags             = local.tags

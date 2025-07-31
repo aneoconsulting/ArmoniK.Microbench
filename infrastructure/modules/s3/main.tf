@@ -10,11 +10,6 @@ locals {
   })
 }
 
-provider "aws" {
-  region  = var.region
-  profile = var.profile
-}
-
 # Random string to ensure unique bucket names
 resource "random_string" "bucket_suffix" {
   length  = 8

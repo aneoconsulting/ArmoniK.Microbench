@@ -1,8 +1,3 @@
-provider "aws" {
-  region  = var.region
-  profile = var.profile
-}
-
 locals {
   username = try(coalesce(var.mq_username_override), random_string.username.result)
   password = try(coalesce(var.mq_password_override), random_password.password.result)

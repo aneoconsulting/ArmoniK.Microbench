@@ -1,8 +1,3 @@
-provider "aws" {
-  region = var.region
-  profile = var.profile
-}
-
 locals {
   config_file_path = coalesce(var.config_file_path, "${path.root}/benchmark_configs/rabbitmq.json")
   username = try(coalesce(var.rabbitmq_username), random_string.username.result)

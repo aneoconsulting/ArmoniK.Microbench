@@ -11,11 +11,6 @@ locals {
   })
 }
 
-provider "aws" {
-  region  = var.region
-  profile = var.profile
-}
-
 resource "aws_security_group" "redis_sg" {
   name        = "${var.prefix}-redis-sg"
   description = "Security group for Redis cluster"
