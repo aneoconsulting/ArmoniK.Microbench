@@ -46,6 +46,7 @@ module "benchmark_runner" {
   source                        = "./modules/runner"
   region                        = var.region
   profile                       = var.profile
+  prefix                        = var.prefix
   additional_tags               = local.common_tags
   network_config                = local.network_config
   benchmark_results_bucket_name = var.results_bucket_name
