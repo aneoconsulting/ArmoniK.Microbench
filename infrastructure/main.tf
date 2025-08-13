@@ -51,6 +51,9 @@ module "benchmark_runner" {
   benchmark_results_bucket_name = var.results_bucket_name
   ssh_key_name                  = aws_key_pair.benchmark_key.key_name
   instance_type                 = var.benchmark_runner != null ? var.benchmark_runner.instance_type : "c7a.8xlarge"
+  providers = {
+    aws = aws
+  }
 }
 
 # Storage Benchmarks
@@ -69,6 +72,9 @@ module "redis_benchmark" {
   profile         = var.profile
   additional_tags = local.common_tags
   node_type       = var.redis_benchmark.instance_type
+  providers = {
+    aws = aws
+  }
 }
 
 module "efs_benchmark" {
@@ -80,6 +86,9 @@ module "efs_benchmark" {
   additional_tags            = local.common_tags
   network_config             = local.network_config
   instance_security_group_id = module.benchmark_runner.benchmark_runner_sg_id
+  providers = {
+    aws = aws
+  }
 }
 
 module "s3_benchmark" {
@@ -90,6 +99,9 @@ module "s3_benchmark" {
   profile                  = var.profile
   additional_tags          = local.common_tags
   benchmark_runner_role_id = module.benchmark_runner.benchmark_runner_role_id
+  providers = {
+    aws = aws
+  }
 }
 
 # Queue Benchmarks
@@ -102,6 +114,9 @@ module "sqs_queue" {
   profile                  = var.profile
   additional_tags          = local.common_tags
   benchmark_runner_role_id = module.benchmark_runner.benchmark_runner_role_id
+  providers = {
+    aws = aws
+  }
 }
 
 module "rabbitmq_amq" {
@@ -116,6 +131,9 @@ module "rabbitmq_amq" {
   network_config         = local.network_config
   host_instance_type     = var.rabbitmq_amq_benchmark.instance_type
   benchmark_runner_sg_id = module.benchmark_runner.benchmark_runner_sg_id
+  providers = {
+    aws = aws
+  }
 }
 
 module "rabbitmq_ec2" {
@@ -128,6 +146,9 @@ module "rabbitmq_ec2" {
   network_config   = local.network_config
   instance_type    = var.rabbitmq_ec2_benchmark.instance_type
   config_file_path = "${path.root}/benchmark_configs/rabbitmq-ec2.json"
+  providers = {
+    aws = aws
+  }
 }
 
 module "activemq" {
@@ -144,4 +165,7 @@ module "activemq" {
   engine_version         = "5.18"
   network_config         = local.network_config
   benchmark_runner_sg_id = module.benchmark_runner.benchmark_runner_sg_id
+  providers = {
+    aws = aws
+  }
 }
