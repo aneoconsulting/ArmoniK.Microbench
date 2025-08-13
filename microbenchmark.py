@@ -505,8 +505,9 @@ def run_study(study_name: str, runner_config: str, config_files: tuple, config_d
 @click.argument('study_name')
 @click.option('--output-dir', default='./results', help='Local directory to download results to')
 @click.option('--profile', envvar='AWS_PROFILE', default='default', help='AWS profile to use')
+@click.option("--no-profile", "no_profile", is_flag=True, default=False)
 @click.option('--run-index', type=int, help='Specific run index to sync (default: all runs)')
-def sync_study(study_name: str, output_dir: str, profile: str, run_index: int):
+def sync_study(study_name: str, output_dir: str, profile: str, no_profile:bool, run_index: int):
     """Download study run results from S3"""
     study_data = load_study(study_name)
     
@@ -527,7 +528,10 @@ def sync_study(study_name: str, output_dir: str, profile: str, run_index: int):
     output_path.mkdir(parents=True, exist_ok=True)
     
     # Initialize S3 client
-    session = boto3.Session(profile_name=profile)
+    if no_profile:
+        session = boto3.Session()
+    else:
+        session = boto3.Session(profile_name=profile)
     s3 = session.client('s3')
     
     click.echo(f"Syncing {len(runs_to_sync)} run(s) for study '{study_name}'")
