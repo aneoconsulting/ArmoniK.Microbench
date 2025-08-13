@@ -38,7 +38,9 @@ variable "benchmark_runner" {
 
 variable "localstorage_benchmark" {
   description = "Parameters for the local storage benchmark (LocalStorage Adapter)"
-  type        = object({})
+  type        = object({
+    fs_path     = optional(string, "/tmp/localstorage_benchtemp")  
+  })
   default     = null
 }
 

@@ -62,7 +62,7 @@ module "benchmark_runner" {
 module "localstorage_benchmark" {
   count        = var.localstorage_benchmark != null ? 1 : 0
   source       = "./modules/localstorage/localfs"
-  storage_path = "/localstorage_benchtemp"
+  storage_path = var.localstorage_benchmark.fs_path
 }
 
 module "redis_benchmark" {
