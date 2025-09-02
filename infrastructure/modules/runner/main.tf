@@ -112,7 +112,7 @@ data "aws_ami" "ubuntu_2204" {
   owners      = ["099720109477"] # Canonical
   filter {
     name   = "name"
-    values = ["ubuntu/images/hvm-*/ubuntu-jammy-22.04-amd64-server-*"]
+    values = ["ubuntu/images/hvm-*/ubuntu-noble-24.04-amd64-server-*"]
   }
 }
 

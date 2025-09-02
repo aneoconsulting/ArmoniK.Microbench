@@ -428,6 +428,14 @@ def run_study(study_name: str, runner_config: str, config_files: tuple, config_d
         else:
             click.echo("Step 2/3: Skipping core build (--skip-build)")
 
+        # TODO: (remove) Debug: check actual target frameworks on the machine
+        c.run("grep -r 'TargetFramework' /home/ubuntu/ArmoniK.Microbench/ArmoniK.Core/Base/src/*.csproj")
+        c.run("grep -r 'TargetFramework' /home/ubuntu/ArmoniK.Microbench/ArmoniK.Core/Utils/src/*.csproj")
+        c.run("grep -r 'TargetFramework' /home/ubuntu/ArmoniK.Microbench/benchmark_runner/BenchmoniK/*.csproj")
+        c.run("find /home/ubuntu/ArmoniK.Microbench -name 'Directory.Build.props' -exec echo '=== {} ===' \\; -exec cat {} \\;")
+        c.run("dotnet --list-sdks") 
+
+
         for config_file in benchmark_configs:
             config_path = Path(config_file)
             config_name = config_path.stem

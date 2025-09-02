@@ -16,7 +16,7 @@ namespace BenchmoniK.Benchmarks;
 
 [MemoryDiagnoser]
 // [DotTraceDiagnoser]
-[SimpleJob(RunStrategy.Monitoring, RuntimeMoniker.Net80, launchCount: 1, warmupCount: 3, iterationCount: 12 )]
+[SimpleJob(RunStrategy.Monitoring, RuntimeMoniker.Net10_0, launchCount: 1, warmupCount: 3, iterationCount: 12 )]
 [Config(typeof(BenchmarkDotNetConfig))]
 public class BaseBenchmark
 {

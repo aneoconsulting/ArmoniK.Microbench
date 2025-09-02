@@ -8,7 +8,7 @@ using BenchmoniK.Utils;
 using System.Collections.Concurrent;
 
 [MemoryDiagnoser]
-[SimpleJob(RunStrategy.Monitoring, RuntimeMoniker.Net80, launchCount: 1, warmupCount: 1, iterationCount: 5)]
+[SimpleJob(RunStrategy.Monitoring, RuntimeMoniker.Net10_0, launchCount: 1, warmupCount: 1, iterationCount: 5)]
 [Config(typeof(BenchmarkDotNetConfig))]
 public abstract class BaseThroughputBenchmark
 {
