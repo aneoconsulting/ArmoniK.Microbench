@@ -26,9 +26,20 @@ public static class ConfigUtils
                                                 "Please set it to the path of your ArmoniK.Core repository root directory.");
         }
 
-        return Path.Combine(armonikCorePath, "Adaptors", adapterName, "src", "bin", configuration, "net8.0", $"ArmoniK.Core.Adapters.{adapterName}.dll");
-    }
+        var basePath = Path.Combine(armonikCorePath, "Adaptors", adapterName, "src", "bin", configuration);
+        var dllName = $"ArmoniK.Core.Adapters.{adapterName}.dll";
 
+        // Check frameworks in order of preference
+        foreach (var tfm in new[] { "net10.0", "net8.0", "net9.0" })
+        {
+            var path = Path.Combine(basePath, tfm, dllName);
+            if (File.Exists(path))
+                return path;
+        }
+
+        throw new FileNotFoundException(
+            $"Could not find {dllName} under {basePath} for any supported target framework (net10.0, net8.0, net9.0).");
+    }
     
     public static ConfigurationManager LoadConfig(string configPath)
     {

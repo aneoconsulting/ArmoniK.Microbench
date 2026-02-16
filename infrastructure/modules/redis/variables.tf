@@ -40,6 +40,14 @@ variable "param_group_name" {
   default     = "default.redis7"
 }
 
+variable "network_config" {
+  type = object({
+    vpc_id    = string
+    subnet_ids = list(string)
+  })
+  description = "Network configuration to use for the EFS (VPC:Subnet)"
+}
+
 # Output
 variable "config_file_path" {
   description = "Path to the local directory to use as the configuration path"

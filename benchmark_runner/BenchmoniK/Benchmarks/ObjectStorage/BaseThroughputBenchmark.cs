@@ -10,7 +10,7 @@ using System.Collections.Concurrent;
 namespace BenchmoniK.Benchmarks.ObjectStorage;
 
 [MemoryDiagnoser]
-[SimpleJob(RunStrategy.Monitoring, RuntimeMoniker.Net80, launchCount: 1, warmupCount: 1, iterationCount: 12)]
+[SimpleJob(RunStrategy.Monitoring, RuntimeMoniker.Net10_0, launchCount: 1, warmupCount: 1, iterationCount: 12)]
 [Config(typeof(BenchmarkDotNetConfig))]
 public class BaseThroughputBenchmark
 {

@@ -1,14 +1,25 @@
 #!/bin/bash
 
-sudo apt update && sudo apt upgrade -y
-sudo apt install -y git awscli zip
+sudo apt-get update
+
+sudo apt-get upgrade -y 
+
+# Install basics
+sudo apt-get install -y git zip curl unzip
 
 wget https://packages.microsoft.com/config/ubuntu/$(lsb_release -rs)/packages-microsoft-prod.deb -O packages-microsoft-prod.deb
-dpkg -i packages-microsoft-prod.deb
+sudo dpkg -i packages-microsoft-prod.deb
 rm packages-microsoft-prod.deb
+sudo apt-get update
+sudo apt-get install -y dotnet-sdk-8.0 dotnet-sdk-10.0
 
-apt update && sudo apt install -y dotnet-sdk-9.0
-apt update && sudo apt install -y dotnet-sdk-8.0
+curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
+unzip awscliv2.zip
+sudo ./aws/install
 
-# Create benchmark results directory
+/usr/local/bin/aws --version
+
 mkdir -p /home/ubuntu/benchmark-results
+
+sudo apt-get clean
+rm -rf awscliv2.zip ./aws

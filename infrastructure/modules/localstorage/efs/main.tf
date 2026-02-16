@@ -1,9 +1,5 @@
 locals {
   config_file_path = coalesce(var.config_file_path, "${path.root}/benchmark_configs/efs.json")
-  # common_tags = {
-  #   Name       = "EFS Benchmarks"
-  #   Deployment = "${var.prefix}-armonik-microbench"
-  # }
 
   tags = merge(var.additional_tags, {
     Module = "EFS"
@@ -40,6 +36,6 @@ resource "aws_security_group" "efs_sg" {
 
 resource "aws_efs_mount_target" "benchmark_fs_target" {
   file_system_id  = aws_efs_file_system.benchmark_fs.id
-  subnet_id       = var.network_config.subnet_id
+  subnet_id       = var.network_config.subnet_ids[0]
   security_groups = [aws_security_group.efs_sg.id]
 }

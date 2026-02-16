@@ -36,7 +36,7 @@ variable "mq_password_override" {
 variable "network_config" {
   type = object({
     vpc_id    = string
-    subnet_id = string
+    subnet_ids = list(string)
   })
   description = "Network configuration to use for the AmazonMQ (VPC:Subnet)"
 }
