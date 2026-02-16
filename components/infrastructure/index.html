@@ -1,0 +1,1413 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+        <link rel="canonical" href="https://aneoconsulting.github.io/ArmoniK.Microbench/components/infrastructure/">
+      
+      
+        <link rel="prev" href="../../study/">
+      
+      
+      
+        
+      
+      
+      <link rel="icon" href="../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.1">
+    
+    
+      
+        <title>Infrastructure - ArmoniK Microbenchmarks</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.484c7ddc.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="white" data-md-color-accent="orange">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#infrastructure" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../.." title="ArmoniK Microbenchmarks" class="md-header__button md-logo" aria-label="ArmoniK Microbenchmarks" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            ArmoniK Microbenchmarks
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Infrastructure
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+    
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/aneoconsulting/ArmoniK.Microbench" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    aneoconsulting/ArmoniK.Microbench
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="ArmoniK Microbenchmarks" class="md-nav__button md-logo" aria-label="ArmoniK Microbenchmarks" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    ArmoniK Microbenchmarks
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/aneoconsulting/ArmoniK.Microbench" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    aneoconsulting/ArmoniK.Microbench
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Home
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../getting-started/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Getting Started
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../study/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Studies
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Infrastructure
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Infrastructure
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+  
+
+<nav class="md-nav md-nav--secondary" aria-label="On this page">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      On this page
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#architecture-overview" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Architecture Overview
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#how-modules-work" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        How Modules Work
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#module-reference" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Module Reference
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Module Reference">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#runner-modulesrunner" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Runner (modules/runner/)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#redis-modulesredis" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Redis (modules/redis/)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#s3-moduless3" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        S3 (modules/s3/)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#localstorage-local-fs-moduleslocalstoragelocalfs" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        LocalStorage - Local FS (modules/localstorage/localfs/)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#localstorage-efs-moduleslocalstorageefs" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        LocalStorage - EFS (modules/localstorage/efs/)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#sqs-modulessqs" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        SQS (modules/sqs/)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#amazonmq-modulesamazonmq" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        AmazonMQ (modules/amazonmq/)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#rabbitmq-ec2-modulesrabbitmqec2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        RabbitMQ EC2 (modules/rabbitmq/ec2/)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#shared-resources" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Shared Resources
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Shared Resources">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#vpc" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        VPC
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#ssh-key-pair" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        SSH Key Pair
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#common-tags" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Common Tags
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#terraform-state" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Terraform State
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#config-file-flow" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Config File Flow
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+  
+
+<nav class="md-nav md-nav--secondary" aria-label="On this page">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      On this page
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#architecture-overview" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Architecture Overview
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#how-modules-work" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        How Modules Work
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#module-reference" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Module Reference
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Module Reference">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#runner-modulesrunner" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Runner (modules/runner/)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#redis-modulesredis" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Redis (modules/redis/)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#s3-moduless3" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        S3 (modules/s3/)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#localstorage-local-fs-moduleslocalstoragelocalfs" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        LocalStorage - Local FS (modules/localstorage/localfs/)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#localstorage-efs-moduleslocalstorageefs" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        LocalStorage - EFS (modules/localstorage/efs/)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#sqs-modulessqs" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        SQS (modules/sqs/)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#amazonmq-modulesamazonmq" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        AmazonMQ (modules/amazonmq/)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#rabbitmq-ec2-modulesrabbitmqec2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        RabbitMQ EC2 (modules/rabbitmq/ec2/)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#shared-resources" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Shared Resources
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Shared Resources">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#vpc" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        VPC
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#ssh-key-pair" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        SSH Key Pair
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#common-tags" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Common Tags
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#terraform-state" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Terraform State
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#config-file-flow" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Config File Flow
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+  
+  
+
+
+<h1 id="infrastructure">Infrastructure<a class="headerlink" href="#infrastructure" title="Permanent link">&para;</a></h1>
+<p>The <code>infrastructure/</code> directory contains modular Terraform code for deploying all AWS resources needed for benchmarking. Each ArmoniK adapter has its own Terraform module that provisions the corresponding AWS service and outputs a benchmark configuration JSON file.</p>
+<h2 id="architecture-overview">Architecture Overview<a class="headerlink" href="#architecture-overview" title="Permanent link">&para;</a></h2>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>                        ┌─────────────────────────────────────────────┐
+</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>                        │                   VPC                       │
+</span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>                        │                                             │
+</span><span id="__span-0-4"><a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a>                        │  ┌───────────────────────────────────────┐  │
+</span><span id="__span-0-5"><a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a>                        │  │          Public Subnets                │  │
+</span><span id="__span-0-6"><a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a>                        │  │                                       │  │
+</span><span id="__span-0-7"><a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a>┌──────────┐   SSH      │  │  ┌──────────────┐                    │  │
+</span><span id="__span-0-8"><a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a>│ CLI /    │───────────&gt;│  │  │  EC2 Runner   │                    │  │
+</span><span id="__span-0-9"><a id="__codelineno-0-9" name="__codelineno-0-9" href="#__codelineno-0-9"></a>│ CI Runner│            │  │  │  (.NET, AWS)  │                    │  │
+</span><span id="__span-0-10"><a id="__codelineno-0-10" name="__codelineno-0-10" href="#__codelineno-0-10"></a>└──────────┘            │  │  └──────┬───────┘                    │  │
+</span><span id="__span-0-11"><a id="__codelineno-0-11" name="__codelineno-0-11" href="#__codelineno-0-11"></a>                        │  │         │                             │  │
+</span><span id="__span-0-12"><a id="__codelineno-0-12" name="__codelineno-0-12" href="#__codelineno-0-12"></a>                        │  │    ┌────┴────┬──────────┬─────────┐  │  │
+</span><span id="__span-0-13"><a id="__codelineno-0-13" name="__codelineno-0-13" href="#__codelineno-0-13"></a>                        │  │    │         │          │         │  │  │
+</span><span id="__span-0-14"><a id="__codelineno-0-14" name="__codelineno-0-14" href="#__codelineno-0-14"></a>                        │  │    v         v          v         v  │  │
+</span><span id="__span-0-15"><a id="__codelineno-0-15" name="__codelineno-0-15" href="#__codelineno-0-15"></a>                        │  │ ┌──────┐ ┌──────┐ ┌────────┐ ┌────┐│  │
+</span><span id="__span-0-16"><a id="__codelineno-0-16" name="__codelineno-0-16" href="#__codelineno-0-16"></a>                        │  │ │Redis │ │Amazon│ │RabbitMQ│ │EFS ││  │
+</span><span id="__span-0-17"><a id="__codelineno-0-17" name="__codelineno-0-17" href="#__codelineno-0-17"></a>                        │  │ │Cache │ │  MQ  │ │  EC2   │ │    ││  │
+</span><span id="__span-0-18"><a id="__codelineno-0-18" name="__codelineno-0-18" href="#__codelineno-0-18"></a>                        │  │ └──────┘ └──────┘ └────────┘ └────┘│  │
+</span><span id="__span-0-19"><a id="__codelineno-0-19" name="__codelineno-0-19" href="#__codelineno-0-19"></a>                        │  └───────────────────────────────────────┘  │
+</span><span id="__span-0-20"><a id="__codelineno-0-20" name="__codelineno-0-20" href="#__codelineno-0-20"></a>                        └─────────────────────────────────────────────┘
+</span><span id="__span-0-21"><a id="__codelineno-0-21" name="__codelineno-0-21" href="#__codelineno-0-21"></a>                                         │
+</span><span id="__span-0-22"><a id="__codelineno-0-22" name="__codelineno-0-22" href="#__codelineno-0-22"></a>                         ┌───────────────┼───────────────┐
+</span><span id="__span-0-23"><a id="__codelineno-0-23" name="__codelineno-0-23" href="#__codelineno-0-23"></a>                         │               │               │
+</span><span id="__span-0-24"><a id="__codelineno-0-24" name="__codelineno-0-24" href="#__codelineno-0-24"></a>                         v               v               v
+</span><span id="__span-0-25"><a id="__codelineno-0-25" name="__codelineno-0-25" href="#__codelineno-0-25"></a>                      ┌──────┐      ┌────────┐     ┌─────────┐
+</span><span id="__span-0-26"><a id="__codelineno-0-26" name="__codelineno-0-26" href="#__codelineno-0-26"></a>                      │  S3  │      │  SQS   │     │ Results │
+</span><span id="__span-0-27"><a id="__codelineno-0-27" name="__codelineno-0-27" href="#__codelineno-0-27"></a>                      │Bucket│      │ Queues │     │   S3    │
+</span><span id="__span-0-28"><a id="__codelineno-0-28" name="__codelineno-0-28" href="#__codelineno-0-28"></a>                      └──────┘      └────────┘     └─────────┘
+</span></code></pre></div>
+<p>All resources are created within a dedicated VPC. The EC2 runner instance communicates with each service over the private network. S3 and SQS are accessed via public AWS endpoints from the runner's IAM role.</p>
+<h2 id="how-modules-work">How Modules Work<a class="headerlink" href="#how-modules-work" title="Permanent link">&para;</a></h2>
+<p>Each module follows the same pattern:</p>
+<ol>
+<li><strong>Provisions AWS resources</strong> (the service itself, security groups, IAM policies)</li>
+<li><strong>Outputs a benchmark config JSON file</strong> to <code>infrastructure/benchmark_configs/</code> -- this file is consumed by BenchmoniK at runtime</li>
+<li><strong>Wires security groups</strong> to allow the runner instance to communicate with the service</li>
+</ol>
+<p>Modules are <strong>conditionally deployed</strong> using the <code>count</code> meta-argument. Setting a variable to <code>null</code> (or omitting it) disables the module entirely:</p>
+<div class="language-hcl highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="c1"># In parameters.tfvars:</span>
+</span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a><span class="nb">redis_benchmark</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="na">instance_type</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;cache.m5.xlarge&quot;</span><span class="w"> </span><span class="p">}</span><span class="c1">  # Deployed</span>
+</span><span id="__span-1-3"><a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a><span class="nb">s3_benchmark</span><span class="w">    </span><span class="o">=</span><span class="w"> </span><span class="p">{}</span><span class="c1">                                      # Deployed with defaults</span>
+</span><span id="__span-1-4"><a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a><span class="na">sqs_benchmark</span><span class="w">   </span><span class="o">=</span><span class="w"> </span><span class="kt">null</span><span class="c1">                                    # Not deployed</span>
+</span><span id="__span-1-5"><a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a><span class="c1"># efs_benchmark                                           # Omitted = not deployed</span>
+</span></code></pre></div>
+<h2 id="module-reference">Module Reference<a class="headerlink" href="#module-reference" title="Permanent link">&para;</a></h2>
+<h3 id="runner-modulesrunner">Runner (<code>modules/runner/</code>)<a class="headerlink" href="#runner-modulesrunner" title="Permanent link">&para;</a></h3>
+<p>The runner module is <strong>always deployed</strong>. It creates the EC2 instance where benchmarks execute.</p>
+<p><strong>Resources created:</strong></p>
+<ul>
+<li>EC2 instance (Ubuntu 24.04) with .NET SDK 8.0 + 10.0 and AWS CLI pre-installed</li>
+<li>IAM role + instance profile with S3 access to the results bucket</li>
+<li>Security group (SSH ingress, all egress)</li>
+</ul>
+<p><strong>Variables:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Variable</th>
+<th>Type</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>instance_type</code></td>
+<td>string</td>
+<td><code>t2.micro</code></td>
+<td>EC2 instance type. Use <code>c7a.8xlarge</code> or similar for real benchmarks</td>
+</tr>
+<tr>
+<td><code>volume_type</code></td>
+<td>string</td>
+<td><code>gp3</code></td>
+<td>EBS volume type</td>
+</tr>
+<tr>
+<td><code>ssh_key_name</code></td>
+<td>string</td>
+<td>(required)</td>
+<td>AWS key pair name for SSH access</td>
+</tr>
+<tr>
+<td><code>benchmark_results_bucket_name</code></td>
+<td>string</td>
+<td>(required)</td>
+<td>S3 bucket name for uploading results</td>
+</tr>
+<tr>
+<td><code>efs_mount_target_ip</code></td>
+<td>string</td>
+<td><code>""</code></td>
+<td>EFS mount target IP. If set, the instance mounts EFS at <code>/mnt/efs</code></td>
+</tr>
+<tr>
+<td><code>network_config</code></td>
+<td>object</td>
+<td>(required)</td>
+<td><code>{ vpc_id, subnet_id }</code></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Config output:</strong> <code>benchmark_configs/runners/benchmark_runner.json</code></p>
+<div class="language-json highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="p">{</span>
+</span><span id="__span-2-2"><a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a><span class="w">  </span><span class="nt">&quot;host&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;ec2-xx-xx-xx-xx.compute-1.amazonaws.com&quot;</span><span class="p">,</span>
+</span><span id="__span-2-3"><a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a><span class="w">  </span><span class="nt">&quot;key&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;/absolute/path/to/generated/benchmark_key.pem&quot;</span><span class="p">,</span>
+</span><span id="__span-2-4"><a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a><span class="w">  </span><span class="nt">&quot;ResourceMetadata&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-2-5"><a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a><span class="w">    </span><span class="nt">&quot;Arn&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;arn:aws:ec2:...&quot;</span><span class="p">,</span>
+</span><span id="__span-2-6"><a id="__codelineno-2-6" name="__codelineno-2-6" href="#__codelineno-2-6"></a><span class="w">    </span><span class="nt">&quot;ResourceId&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;i-xxxx&quot;</span><span class="p">,</span>
+</span><span id="__span-2-7"><a id="__codelineno-2-7" name="__codelineno-2-7" href="#__codelineno-2-7"></a><span class="w">    </span><span class="nt">&quot;NodeType&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;c7a.8xlarge&quot;</span><span class="p">,</span>
+</span><span id="__span-2-8"><a id="__codelineno-2-8" name="__codelineno-2-8" href="#__codelineno-2-8"></a><span class="w">    </span><span class="nt">&quot;VolumeType&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;gp3&quot;</span>
+</span><span id="__span-2-9"><a id="__codelineno-2-9" name="__codelineno-2-9" href="#__codelineno-2-9"></a><span class="w">  </span><span class="p">}</span>
+</span><span id="__span-2-10"><a id="__codelineno-2-10" name="__codelineno-2-10" href="#__codelineno-2-10"></a><span class="p">}</span>
+</span></code></pre></div>
+<hr />
+<h3 id="redis-modulesredis">Redis (<code>modules/redis/</code>)<a class="headerlink" href="#redis-modulesredis" title="Permanent link">&para;</a></h3>
+<p>Deploys an AWS ElastiCache Redis cluster for benchmarking the Redis object storage adapter.</p>
+<p><strong>Resources created:</strong></p>
+<ul>
+<li>ElastiCache Redis cluster (single node)</li>
+<li>ElastiCache subnet group</li>
+<li>Security group (port 6379)</li>
+</ul>
+<p><strong>Variables:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Variable</th>
+<th>Type</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>node_type</code></td>
+<td>string</td>
+<td><code>cache.t3.micro</code></td>
+<td>ElastiCache node type</td>
+</tr>
+<tr>
+<td><code>engine_version</code></td>
+<td>string</td>
+<td><code>7.0</code></td>
+<td>Redis engine version</td>
+</tr>
+<tr>
+<td><code>param_group_name</code></td>
+<td>string</td>
+<td><code>default.redis7</code></td>
+<td>Parameter group name</td>
+</tr>
+<tr>
+<td><code>network_config</code></td>
+<td>object</td>
+<td>(required)</td>
+<td><code>{ vpc_id, subnet_id, subnet_ids }</code></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Config output:</strong> <code>benchmark_configs/redis.json</code></p>
+<div class="language-json highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="p">{</span>
+</span><span id="__span-3-2"><a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a><span class="w">  </span><span class="nt">&quot;Component&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Redis&quot;</span><span class="p">,</span>
+</span><span id="__span-3-3"><a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a><span class="w">  </span><span class="nt">&quot;Redis:EndpointUrl&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;xxx.cache.amazonaws.com:6379&quot;</span><span class="p">,</span>
+</span><span id="__span-3-4"><a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a><span class="w">  </span><span class="nt">&quot;Redis:ClientName&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;BenchmoniK&quot;</span><span class="p">,</span>
+</span><span id="__span-3-5"><a id="__codelineno-3-5" name="__codelineno-3-5" href="#__codelineno-3-5"></a><span class="w">  </span><span class="nt">&quot;Redis:InstanceName&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;benchmark&quot;</span><span class="p">,</span>
+</span><span id="__span-3-6"><a id="__codelineno-3-6" name="__codelineno-3-6" href="#__codelineno-3-6"></a><span class="w">  </span><span class="nt">&quot;Redis:MaxRetry&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">5</span><span class="p">,</span>
+</span><span id="__span-3-7"><a id="__codelineno-3-7" name="__codelineno-3-7" href="#__codelineno-3-7"></a><span class="w">  </span><span class="nt">&quot;Redis:MsAfterRetry&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">500</span><span class="p">,</span>
+</span><span id="__span-3-8"><a id="__codelineno-3-8" name="__codelineno-3-8" href="#__codelineno-3-8"></a><span class="w">  </span><span class="nt">&quot;Redis:Timeout&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">5000</span><span class="p">,</span>
+</span><span id="__span-3-9"><a id="__codelineno-3-9" name="__codelineno-3-9" href="#__codelineno-3-9"></a><span class="w">  </span><span class="nt">&quot;Redis:Ssl&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="p">,</span>
+</span><span id="__span-3-10"><a id="__codelineno-3-10" name="__codelineno-3-10" href="#__codelineno-3-10"></a><span class="w">  </span><span class="nt">&quot;ResourceMetadata&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="err">...</span><span class="w"> </span><span class="p">}</span>
+</span><span id="__span-3-11"><a id="__codelineno-3-11" name="__codelineno-3-11" href="#__codelineno-3-11"></a><span class="p">}</span>
+</span></code></pre></div>
+<hr />
+<h3 id="s3-moduless3">S3 (<code>modules/s3/</code>)<a class="headerlink" href="#s3-moduless3" title="Permanent link">&para;</a></h3>
+<p>Creates an S3 bucket for benchmarking the S3 object storage adapter.</p>
+<p><strong>Resources created:</strong></p>
+<ul>
+<li>S3 bucket (with random suffix for uniqueness)</li>
+<li>IAM policy granting the runner role access to the bucket</li>
+</ul>
+<p><strong>Variables:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Variable</th>
+<th>Type</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>benchmark_runner_role_id</code></td>
+<td>string</td>
+<td>(required)</td>
+<td>IAM role ID of the runner (for policy attachment)</td>
+</tr>
+<tr>
+<td><code>additional_s3_config</code></td>
+<td>map</td>
+<td><code>{}</code></td>
+<td>Extra key-value pairs merged into the config output</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Config output:</strong> <code>benchmark_configs/s3.json</code></p>
+<div class="language-json highlight"><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="p">{</span>
+</span><span id="__span-4-2"><a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a><span class="w">  </span><span class="nt">&quot;Component&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;S3&quot;</span><span class="p">,</span>
+</span><span id="__span-4-3"><a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a><span class="w">  </span><span class="nt">&quot;S3:BucketName&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;prefix-s3-benchmark-xxxx&quot;</span><span class="p">,</span>
+</span><span id="__span-4-4"><a id="__codelineno-4-4" name="__codelineno-4-4" href="#__codelineno-4-4"></a><span class="w">  </span><span class="nt">&quot;S3:EndpointUrl&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;https://s3.us-east-1.amazonaws.com&quot;</span><span class="p">,</span>
+</span><span id="__span-4-5"><a id="__codelineno-4-5" name="__codelineno-4-5" href="#__codelineno-4-5"></a><span class="w">  </span><span class="nt">&quot;S3:Region&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;us-east-1&quot;</span><span class="p">,</span>
+</span><span id="__span-4-6"><a id="__codelineno-4-6" name="__codelineno-4-6" href="#__codelineno-4-6"></a><span class="w">  </span><span class="nt">&quot;S3:Profile&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;default&quot;</span><span class="p">,</span>
+</span><span id="__span-4-7"><a id="__codelineno-4-7" name="__codelineno-4-7" href="#__codelineno-4-7"></a><span class="w">  </span><span class="nt">&quot;S3:MustForcePathStyle&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span>
+</span><span id="__span-4-8"><a id="__codelineno-4-8" name="__codelineno-4-8" href="#__codelineno-4-8"></a><span class="w">  </span><span class="nt">&quot;ResourceMetadata&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="err">...</span><span class="w"> </span><span class="p">}</span>
+</span><span id="__span-4-9"><a id="__codelineno-4-9" name="__codelineno-4-9" href="#__codelineno-4-9"></a><span class="p">}</span>
+</span></code></pre></div>
+<hr />
+<h3 id="localstorage-local-fs-moduleslocalstoragelocalfs">LocalStorage - Local FS (<code>modules/localstorage/localfs/</code>)<a class="headerlink" href="#localstorage-local-fs-moduleslocalstoragelocalfs" title="Permanent link">&para;</a></h3>
+<p>The simplest module. It just generates a config file pointing BenchmoniK at a local filesystem path on the runner. No AWS resources are created.</p>
+<p><strong>Variables:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Variable</th>
+<th>Type</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>storage_path</code></td>
+<td>string</td>
+<td>(required)</td>
+<td>Filesystem path on the runner to use for storage</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Config output:</strong> <code>benchmark_configs/localstorage.json</code></p>
+<div class="language-json highlight"><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="p">{</span>
+</span><span id="__span-5-2"><a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a><span class="w">  </span><span class="nt">&quot;Component&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;LocalStorage&quot;</span><span class="p">,</span>
+</span><span id="__span-5-3"><a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a><span class="w">  </span><span class="nt">&quot;LocalStorage:Path&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;/tmp/localstorage_benchtemp&quot;</span>
+</span><span id="__span-5-4"><a id="__codelineno-5-4" name="__codelineno-5-4" href="#__codelineno-5-4"></a><span class="p">}</span>
+</span></code></pre></div>
+<hr />
+<h3 id="localstorage-efs-moduleslocalstorageefs">LocalStorage - EFS (<code>modules/localstorage/efs/</code>)<a class="headerlink" href="#localstorage-efs-moduleslocalstorageefs" title="Permanent link">&para;</a></h3>
+<p>Deploys an AWS EFS filesystem for benchmarking the LocalStorage adapter over a network filesystem.</p>
+<p><strong>Resources created:</strong></p>
+<ul>
+<li>EFS file system (generalPurpose performance mode)</li>
+<li>Security group (NFS port 2049, restricted to the runner SG)</li>
+<li>EFS mount target in the benchmark subnet</li>
+</ul>
+<p><strong>Variables:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Variable</th>
+<th>Type</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>instance_security_group_id</code></td>
+<td>string</td>
+<td>(required)</td>
+<td>Runner's security group ID (for NFS ingress rule)</td>
+</tr>
+<tr>
+<td><code>network_config</code></td>
+<td>object</td>
+<td>(required)</td>
+<td><code>{ vpc_id, subnet_id }</code></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Config output:</strong> <code>benchmark_configs/efs.json</code></p>
+<div class="language-json highlight"><pre><span></span><code><span id="__span-6-1"><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a><span class="p">{</span>
+</span><span id="__span-6-2"><a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a><span class="w">  </span><span class="nt">&quot;Component&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;LocalStorage&quot;</span><span class="p">,</span>
+</span><span id="__span-6-3"><a id="__codelineno-6-3" name="__codelineno-6-3" href="#__codelineno-6-3"></a><span class="w">  </span><span class="nt">&quot;LocalStorage:Path&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;/mnt/efs&quot;</span>
+</span><span id="__span-6-4"><a id="__codelineno-6-4" name="__codelineno-6-4" href="#__codelineno-6-4"></a><span class="p">}</span>
+</span></code></pre></div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The EFS mount target IP must be passed to the runner module's <code>efs_mount_target_ip</code> variable so that the runner's user data script mounts the filesystem at <code>/mnt/efs</code>.</p>
+</div>
+<hr />
+<h3 id="sqs-modulessqs">SQS (<code>modules/sqs/</code>)<a class="headerlink" href="#sqs-modulessqs" title="Permanent link">&para;</a></h3>
+<p>Sets up IAM permissions for the runner to create and manage SQS queues. SQS queues are created dynamically by the benchmark itself -- this module only grants the necessary permissions.</p>
+<p><strong>Resources created:</strong></p>
+<ul>
+<li>IAM policy with SQS permissions (scoped to <code>prefix*</code> queue names)</li>
+<li>Policy attachment to the runner IAM role</li>
+</ul>
+<p><strong>Variables:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Variable</th>
+<th>Type</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>benchmark_runner_role_id</code></td>
+<td>string</td>
+<td>(required)</td>
+<td>IAM role ID of the runner</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Config output:</strong> <code>benchmark_configs/sqs.json</code></p>
+<div class="language-json highlight"><pre><span></span><code><span id="__span-7-1"><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a><span class="p">{</span>
+</span><span id="__span-7-2"><a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a><span class="w">  </span><span class="nt">&quot;Component&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;SQS&quot;</span><span class="p">,</span>
+</span><span id="__span-7-3"><a id="__codelineno-7-3" name="__codelineno-7-3" href="#__codelineno-7-3"></a><span class="w">  </span><span class="nt">&quot;SQS:ServiceURL&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;https://sqs.us-east-1.amazonaws.com&quot;</span><span class="p">,</span>
+</span><span id="__span-7-4"><a id="__codelineno-7-4" name="__codelineno-7-4" href="#__codelineno-7-4"></a><span class="w">  </span><span class="nt">&quot;SQS:Prefix&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;prefix&quot;</span>
+</span><span id="__span-7-5"><a id="__codelineno-7-5" name="__codelineno-7-5" href="#__codelineno-7-5"></a><span class="p">}</span>
+</span></code></pre></div>
+<hr />
+<h3 id="amazonmq-modulesamazonmq">AmazonMQ (<code>modules/amazonmq/</code>)<a class="headerlink" href="#amazonmq-modulesamazonmq" title="Permanent link">&para;</a></h3>
+<p>Deploys an AWS-managed message broker via AmazonMQ. This module supports <strong>both RabbitMQ and ActiveMQ</strong> -- the engine type is controlled by the <code>engine_type</code> variable.</p>
+<p><strong>Resources created:</strong></p>
+<ul>
+<li>AmazonMQ broker (single-instance deployment)</li>
+<li>Security group with AMQP (5671) and management console (8162) ports</li>
+<li>Security group rules for runner-to-broker communication</li>
+<li>Random credentials (if not overridden)</li>
+<li>ActiveMQ XML configuration (ActiveMQ engine only)</li>
+</ul>
+<p><strong>Variables:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Variable</th>
+<th>Type</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>engine_type</code></td>
+<td>string</td>
+<td><code>RabbitMQ</code></td>
+<td><code>RabbitMQ</code> or <code>ActiveMQ</code></td>
+</tr>
+<tr>
+<td><code>engine_version</code></td>
+<td>string</td>
+<td><code>3.13</code></td>
+<td>Engine version</td>
+</tr>
+<tr>
+<td><code>host_instance_type</code></td>
+<td>string</td>
+<td><code>mq.m5.xlarge</code></td>
+<td>Broker instance type</td>
+</tr>
+<tr>
+<td><code>mq_username_override</code></td>
+<td>string</td>
+<td>(random)</td>
+<td>Override the auto-generated username</td>
+</tr>
+<tr>
+<td><code>mq_password_override</code></td>
+<td>string</td>
+<td>(random)</td>
+<td>Override the auto-generated password</td>
+</tr>
+<tr>
+<td><code>benchmark_runner_sg_id</code></td>
+<td>string</td>
+<td>(required)</td>
+<td>Runner's security group ID</td>
+</tr>
+<tr>
+<td><code>network_config</code></td>
+<td>object</td>
+<td>(required)</td>
+<td><code>{ vpc_id, subnet_id }</code></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Config output:</strong> <code>benchmark_configs/rabbitmq-amq.json</code> or <code>benchmark_configs/activemq.json</code></p>
+<div class="language-json highlight"><pre><span></span><code><span id="__span-8-1"><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a><span class="p">{</span>
+</span><span id="__span-8-2"><a id="__codelineno-8-2" name="__codelineno-8-2" href="#__codelineno-8-2"></a><span class="w">  </span><span class="nt">&quot;Component&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;RabbitMQ&quot;</span><span class="p">,</span>
+</span><span id="__span-8-3"><a id="__codelineno-8-3" name="__codelineno-8-3" href="#__codelineno-8-3"></a><span class="w">  </span><span class="nt">&quot;Amqp:Host&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;b-xxxx.mq.us-east-1.amazonaws.com&quot;</span><span class="p">,</span>
+</span><span id="__span-8-4"><a id="__codelineno-8-4" name="__codelineno-8-4" href="#__codelineno-8-4"></a><span class="w">  </span><span class="nt">&quot;Amqp:Port&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">5671</span><span class="p">,</span>
+</span><span id="__span-8-5"><a id="__codelineno-8-5" name="__codelineno-8-5" href="#__codelineno-8-5"></a><span class="w">  </span><span class="nt">&quot;Amqp:Scheme&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;AMQPS&quot;</span><span class="p">,</span>
+</span><span id="__span-8-6"><a id="__codelineno-8-6" name="__codelineno-8-6" href="#__codelineno-8-6"></a><span class="w">  </span><span class="nt">&quot;Amqp:User&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;rabbitmqbench&quot;</span><span class="p">,</span>
+</span><span id="__span-8-7"><a id="__codelineno-8-7" name="__codelineno-8-7" href="#__codelineno-8-7"></a><span class="w">  </span><span class="nt">&quot;Amqp:Password&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;rabbitmqbench&quot;</span><span class="p">,</span>
+</span><span id="__span-8-8"><a id="__codelineno-8-8" name="__codelineno-8-8" href="#__codelineno-8-8"></a><span class="w">  </span><span class="nt">&quot;Amqp:MaxRetries&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span>
+</span><span id="__span-8-9"><a id="__codelineno-8-9" name="__codelineno-8-9" href="#__codelineno-8-9"></a><span class="w">  </span><span class="nt">&quot;ResourceMetadata&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="err">...</span><span class="w"> </span><span class="p">}</span>
+</span><span id="__span-8-10"><a id="__codelineno-8-10" name="__codelineno-8-10" href="#__codelineno-8-10"></a><span class="p">}</span>
+</span></code></pre></div>
+<p>In <code>main.tf</code>, this module is instantiated twice (once for RabbitMQ, once for ActiveMQ):</p>
+<div class="language-hcl highlight"><pre><span></span><code><span id="__span-9-1"><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a><span class="kr">module</span><span class="w"> </span><span class="nv">&quot;rabbitmq_amq&quot;</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-9-2"><a id="__codelineno-9-2" name="__codelineno-9-2" href="#__codelineno-9-2"></a><span class="w">  </span><span class="na">source</span><span class="w">      </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;./modules/amazonmq&quot;</span>
+</span><span id="__span-9-3"><a id="__codelineno-9-3" name="__codelineno-9-3" href="#__codelineno-9-3"></a><span class="w">  </span><span class="na">engine_type</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;RabbitMQ&quot;</span><span class="c1">       # defaults</span>
+</span><span id="__span-9-4"><a id="__codelineno-9-4" name="__codelineno-9-4" href="#__codelineno-9-4"></a><span class="c1">  # ...</span>
+</span><span id="__span-9-5"><a id="__codelineno-9-5" name="__codelineno-9-5" href="#__codelineno-9-5"></a><span class="p">}</span>
+</span><span id="__span-9-6"><a id="__codelineno-9-6" name="__codelineno-9-6" href="#__codelineno-9-6"></a>
+</span><span id="__span-9-7"><a id="__codelineno-9-7" name="__codelineno-9-7" href="#__codelineno-9-7"></a><span class="kr">module</span><span class="w"> </span><span class="nv">&quot;activemq&quot;</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-9-8"><a id="__codelineno-9-8" name="__codelineno-9-8" href="#__codelineno-9-8"></a><span class="w">  </span><span class="na">source</span><span class="w">         </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;./modules/amazonmq&quot;</span>
+</span><span id="__span-9-9"><a id="__codelineno-9-9" name="__codelineno-9-9" href="#__codelineno-9-9"></a><span class="w">  </span><span class="na">engine_type</span><span class="w">    </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;ActiveMQ&quot;</span>
+</span><span id="__span-9-10"><a id="__codelineno-9-10" name="__codelineno-9-10" href="#__codelineno-9-10"></a><span class="w">  </span><span class="na">engine_version</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;5.18&quot;</span>
+</span><span id="__span-9-11"><a id="__codelineno-9-11" name="__codelineno-9-11" href="#__codelineno-9-11"></a><span class="c1">  # ...</span>
+</span><span id="__span-9-12"><a id="__codelineno-9-12" name="__codelineno-9-12" href="#__codelineno-9-12"></a><span class="p">}</span>
+</span></code></pre></div>
+<hr />
+<h3 id="rabbitmq-ec2-modulesrabbitmqec2">RabbitMQ EC2 (<code>modules/rabbitmq/ec2/</code>)<a class="headerlink" href="#rabbitmq-ec2-modulesrabbitmqec2" title="Permanent link">&para;</a></h3>
+<p>Deploys RabbitMQ on a standalone EC2 instance. This is an alternative to the AmazonMQ-managed approach, useful when you need more control over the RabbitMQ configuration or want to test unmanaged deployments.</p>
+<p><strong>Resources created:</strong></p>
+<ul>
+<li>EC2 instance (Ubuntu 22.04) with RabbitMQ 4.x installed via user data script</li>
+<li>Security group (AMQP 5672, management UI 15672)</li>
+<li>Random credentials (if not overridden)</li>
+<li>Optional CloudWatch log group and SSM parameter for log shipping</li>
+</ul>
+<p><strong>Variables:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Variable</th>
+<th>Type</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>instance_type</code></td>
+<td>string</td>
+<td><code>m5.4xlarge</code></td>
+<td>EC2 instance type</td>
+</tr>
+<tr>
+<td><code>rabbitmq_username</code></td>
+<td>string</td>
+<td>(random)</td>
+<td>Override the auto-generated username</td>
+</tr>
+<tr>
+<td><code>rabbitmq_password</code></td>
+<td>string</td>
+<td>(random)</td>
+<td>Override the auto-generated password</td>
+</tr>
+<tr>
+<td><code>enable_cloudwatch_logs</code></td>
+<td>bool</td>
+<td><code>false</code></td>
+<td>Enable CloudWatch log shipping</td>
+</tr>
+<tr>
+<td><code>network_config</code></td>
+<td>object</td>
+<td>(required)</td>
+<td><code>{ vpc_id, subnet_id }</code></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Config output:</strong> <code>benchmark_configs/rabbitmq-ec2.json</code></p>
+<div class="language-json highlight"><pre><span></span><code><span id="__span-10-1"><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a><span class="p">{</span>
+</span><span id="__span-10-2"><a id="__codelineno-10-2" name="__codelineno-10-2" href="#__codelineno-10-2"></a><span class="w">  </span><span class="nt">&quot;Component&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;RabbitMQ&quot;</span><span class="p">,</span>
+</span><span id="__span-10-3"><a id="__codelineno-10-3" name="__codelineno-10-3" href="#__codelineno-10-3"></a><span class="w">  </span><span class="nt">&quot;Amqp:Host&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;10.0.1.xx&quot;</span><span class="p">,</span>
+</span><span id="__span-10-4"><a id="__codelineno-10-4" name="__codelineno-10-4" href="#__codelineno-10-4"></a><span class="w">  </span><span class="nt">&quot;Amqp:Port&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">5672</span><span class="p">,</span>
+</span><span id="__span-10-5"><a id="__codelineno-10-5" name="__codelineno-10-5" href="#__codelineno-10-5"></a><span class="w">  </span><span class="nt">&quot;Amqp:Scheme&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;AMQP&quot;</span><span class="p">,</span>
+</span><span id="__span-10-6"><a id="__codelineno-10-6" name="__codelineno-10-6" href="#__codelineno-10-6"></a><span class="w">  </span><span class="nt">&quot;Amqp:User&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;xxxx&quot;</span><span class="p">,</span>
+</span><span id="__span-10-7"><a id="__codelineno-10-7" name="__codelineno-10-7" href="#__codelineno-10-7"></a><span class="w">  </span><span class="nt">&quot;Amqp:Password&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;xxxx&quot;</span><span class="p">,</span>
+</span><span id="__span-10-8"><a id="__codelineno-10-8" name="__codelineno-10-8" href="#__codelineno-10-8"></a><span class="w">  </span><span class="nt">&quot;Amqp:MaxRetries&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span>
+</span><span id="__span-10-9"><a id="__codelineno-10-9" name="__codelineno-10-9" href="#__codelineno-10-9"></a><span class="w">  </span><span class="nt">&quot;ResourceMetadata&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="err">...</span><span class="w"> </span><span class="p">},</span>
+</span><span id="__span-10-10"><a id="__codelineno-10-10" name="__codelineno-10-10" href="#__codelineno-10-10"></a><span class="w">  </span><span class="nt">&quot;Management&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-10-11"><a id="__codelineno-10-11" name="__codelineno-10-11" href="#__codelineno-10-11"></a><span class="w">    </span><span class="nt">&quot;Host&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;ec2-xx-xx-xx-xx.compute-1.amazonaws.com&quot;</span><span class="p">,</span>
+</span><span id="__span-10-12"><a id="__codelineno-10-12" name="__codelineno-10-12" href="#__codelineno-10-12"></a><span class="w">    </span><span class="nt">&quot;IP&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;xx.xx.xx.xx&quot;</span><span class="p">,</span>
+</span><span id="__span-10-13"><a id="__codelineno-10-13" name="__codelineno-10-13" href="#__codelineno-10-13"></a><span class="w">    </span><span class="nt">&quot;Port&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">15672</span>
+</span><span id="__span-10-14"><a id="__codelineno-10-14" name="__codelineno-10-14" href="#__codelineno-10-14"></a><span class="w">  </span><span class="p">}</span>
+</span><span id="__span-10-15"><a id="__codelineno-10-15" name="__codelineno-10-15" href="#__codelineno-10-15"></a><span class="p">}</span>
+</span></code></pre></div>
+<h2 id="shared-resources">Shared Resources<a class="headerlink" href="#shared-resources" title="Permanent link">&para;</a></h2>
+<h3 id="vpc">VPC<a class="headerlink" href="#vpc" title="Permanent link">&para;</a></h3>
+<p>Created in <code>main.tf</code> using the <code>terraform-aws-modules/vpc/aws</code> community module:</p>
+<ul>
+<li>CIDR: <code>10.0.0.0/16</code></li>
+<li>Two public subnets (<code>10.0.1.0/24</code>, <code>10.0.2.0/24</code>)</li>
+<li>DNS hostnames and support enabled</li>
+</ul>
+<h3 id="ssh-key-pair">SSH Key Pair<a class="headerlink" href="#ssh-key-pair" title="Permanent link">&para;</a></h3>
+<p>Generated by Terraform using the <code>tls_private_key</code> resource (RSA 2048-bit). The private key is written to <code>infrastructure/generated/benchmark_key.pem</code> and also available as a Terraform output.</p>
+<h3 id="common-tags">Common Tags<a class="headerlink" href="#common-tags" title="Permanent link">&para;</a></h3>
+<p>All resources are tagged with:</p>
+<div class="language-hcl highlight"><pre><span></span><code><span id="__span-11-1"><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a><span class="p">{</span>
+</span><span id="__span-11-2"><a id="__codelineno-11-2" name="__codelineno-11-2" href="#__codelineno-11-2"></a><span class="w">  </span><span class="na">application</span><span class="w">          </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;Microbenchmarks&quot;</span>
+</span><span id="__span-11-3"><a id="__codelineno-11-3" name="__codelineno-11-3" href="#__codelineno-11-3"></a><span class="w">  </span><span class="s2">&quot;deployment version&quot; = &quot;${prefix}-armonik-microbench&quot;</span>
+</span><span id="__span-11-4"><a id="__codelineno-11-4" name="__codelineno-11-4" href="#__codelineno-11-4"></a><span class="p">}</span>
+</span></code></pre></div>
+<p>Plus per-module tags identifying the module name.</p>
+<h2 id="terraform-state">Terraform State<a class="headerlink" href="#terraform-state" title="Permanent link">&para;</a></h2>
+<p>For CI/CD runs, the Terraform state is stored remotely in an S3 bucket (<code>armonik-microbench-backend-tfstate</code>) with a run-specific key:</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-12-1"><a id="__codelineno-12-1" name="__codelineno-12-1" href="#__codelineno-12-1"></a>s3://armonik-microbench-backend-tfstate/microbench/&lt;run-id&gt;/terraform.tfstate
+</span></code></pre></div>
+<p>For local development, state defaults to the local filesystem (<code>terraform.tfstate</code>).</p>
+<h2 id="config-file-flow">Config File Flow<a class="headerlink" href="#config-file-flow" title="Permanent link">&para;</a></h2>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-13-1"><a id="__codelineno-13-1" name="__codelineno-13-1" href="#__codelineno-13-1"></a>terraform apply
+</span><span id="__span-13-2"><a id="__codelineno-13-2" name="__codelineno-13-2" href="#__codelineno-13-2"></a>    │
+</span><span id="__span-13-3"><a id="__codelineno-13-3" name="__codelineno-13-3" href="#__codelineno-13-3"></a>    ├── modules/runner/outputs.tf   → benchmark_configs/runners/benchmark_runner.json
+</span><span id="__span-13-4"><a id="__codelineno-13-4" name="__codelineno-13-4" href="#__codelineno-13-4"></a>    ├── modules/redis/outputs.tf    → benchmark_configs/redis.json
+</span><span id="__span-13-5"><a id="__codelineno-13-5" name="__codelineno-13-5" href="#__codelineno-13-5"></a>    ├── modules/s3/outputs.tf       → benchmark_configs/s3.json
+</span><span id="__span-13-6"><a id="__codelineno-13-6" name="__codelineno-13-6" href="#__codelineno-13-6"></a>    ├── modules/sqs/outputs.tf      → benchmark_configs/sqs.json
+</span><span id="__span-13-7"><a id="__codelineno-13-7" name="__codelineno-13-7" href="#__codelineno-13-7"></a>    ├── modules/amazonmq/outputs.tf → benchmark_configs/rabbitmq-amq.json (or activemq.json)
+</span><span id="__span-13-8"><a id="__codelineno-13-8" name="__codelineno-13-8" href="#__codelineno-13-8"></a>    ├── modules/rabbitmq/ec2/...    → benchmark_configs/rabbitmq-ec2.json
+</span><span id="__span-13-9"><a id="__codelineno-13-9" name="__codelineno-13-9" href="#__codelineno-13-9"></a>    ├── modules/localstorage/localfs → benchmark_configs/localstorage.json
+</span><span id="__span-13-10"><a id="__codelineno-13-10" name="__codelineno-13-10" href="#__codelineno-13-10"></a>    └── modules/localstorage/efs/... → benchmark_configs/efs.json
+</span><span id="__span-13-11"><a id="__codelineno-13-11" name="__codelineno-13-11" href="#__codelineno-13-11"></a>         │
+</span><span id="__span-13-12"><a id="__codelineno-13-12" name="__codelineno-13-12" href="#__codelineno-13-12"></a>         v
+</span><span id="__span-13-13"><a id="__codelineno-13-13" name="__codelineno-13-13" href="#__codelineno-13-13"></a>    microbenchmark.py study run --directory ./infrastructure/benchmark_configs
+</span><span id="__span-13-14"><a id="__codelineno-13-14" name="__codelineno-13-14" href="#__codelineno-13-14"></a>         │
+</span><span id="__span-13-15"><a id="__codelineno-13-15" name="__codelineno-13-15" href="#__codelineno-13-15"></a>         v
+</span><span id="__span-13-16"><a id="__codelineno-13-16" name="__codelineno-13-16" href="#__codelineno-13-16"></a>    BenchmoniK reads &quot;Component&quot; field → dispatches to correct benchmark class
+</span></code></pre></div>
+<p>The <code>benchmark_configs/</code> directory is gitignored since it contains deployment-specific values (endpoints, credentials).</p>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["content.code.copy", "content.code.annotate", "content.tooltips"], "search": "../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.79ae519e.min.js"></script>
+      
+    
+  </body>
+</html>
