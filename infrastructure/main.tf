@@ -1,12 +1,11 @@
 provider "aws" {
   region  = var.region
-  # profile = var.profile
+  profile = var.profile
 }
 
 locals {
   network_config = {
     vpc_id     = module.vpc.vpc_id
-    subnet_id  = module.vpc.public_subnets[0]
     subnet_ids = module.vpc.public_subnets 
   }
   common_tags = merge(

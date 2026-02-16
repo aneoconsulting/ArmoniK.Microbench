@@ -13,7 +13,10 @@ on:
         description: 'ArmoniK.Core repository'
         required: true
         default: 'AncientPatata/ArmoniK.Core'
-      
+      microbench_ref:
+        description: 'ArmoniK.Microbench ref to checkout'
+        required: false
+        default: ''
   repository_dispatch:
     types: [trigger-microbenchmarks]
 
@@ -49,10 +52,25 @@ jobs:
           else
             echo "armonik_core_repository=${{ github.event.inputs.armonik_core_repository || 'aneoconsulting/ArmoniK.Core' }}" >> $GITHUB_OUTPUT
           fi
+
+      - name: Set microbench ref
+        id: set_microbench_ref
+        run: |
+          if [ "${{ github.event_name }}" = "repository_dispatch" ]; then
+            REF="${{ github.event.client_payload.microbench_ref }}"
+          else
+            REF="${{ github.event.inputs.microbench_ref }}"
+          fi
+          # Default to the current SHA (or main for releases)
+          if [ -z "$REF" ]; then
+            REF="${{ github.sha }}"
+          fi
+          echo "ref=$REF" >> $GITHUB_OUTPUT
+
       - name: Checkout ArmoniK.Microbench
         uses: actions/checkout@v6
         with:
-          ref: "main" #TODO: This should probably be its own variable
+          ref: ${{ steps.set_microbench_ref.outputs.ref }}
           token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Install the latest version of uv
@@ -80,22 +98,15 @@ jobs:
           repository: ${{steps.set_core_repo.outputs.armonik_core_repository}}
           ref: ${{ steps.set_tag.outputs.release_tag }}
           path: ArmoniK.Core
-
-          # TODO: Temp => Remove
-
-      - name: Debug
-        run: |
-          echo "Repo: '${{ steps.set_core_repo.outputs.armonik_core_repository }}'"
-          echo "Tag: '${{ steps.set_tag.outputs.release_tag }}'"
-      - name: Debug - list Core repo contents
-        run: |
-          ls -R ArmoniK.Core/microbenchmarks/ || echo "Directory does not exist"
-          find ArmoniK.Core -name "parameters.tfvars" || echo "File not found anywhere"
-
       - name: Copy parameters.tfvars
         run: |
-          # Copy the parameters file from ArmoniK.Core to ArmoniK.Microbench
-          cp ArmoniK.Core/microbenchmarks/parameters.tfvars infrastructure/
+          PARAMS_FILE="ArmoniK.Core/microbenchmarks/parameters.tfvars"
+          if [ ! -f "$PARAMS_FILE" ]; then
+            echo "::error::parameters.tfvars not found at $PARAMS_FILE"
+            echo "Expected file structure: ArmoniK.Core/microbenchmarks/parameters.tfvars"
+            exit 1
+          fi
+          cp "$PARAMS_FILE" infrastructure/
 
       - name: Initialize and Deploy Infrastructure
         id: deploy
@@ -126,6 +137,29 @@ jobs:
           chmod 600 /tmp/runner_key.pem
           echo "runner_key_path=/tmp/runner_key.pem" >> $GITHUB_OUTPUT
 
+      - name: Wait for Runner Instance
+        run: |
+          RUNNER_HOST="${{ steps.deploy.outputs.runner_host }}"
+          RUNNER_KEY="${{ steps.deploy.outputs.runner_key_path }}"
+          echo "Waiting for runner instance to be reachable..."
+          MAX_ATTEMPTS=30
+          ATTEMPT=0
+          while [ $ATTEMPT -lt $MAX_ATTEMPTS ]; do
+            if ssh -o StrictHostKeyChecking=no -o ConnectTimeout=10 \
+              -i "$RUNNER_KEY" ubuntu@"$RUNNER_HOST" "echo ready" 2>/dev/null; then
+              echo "Runner is reachable after ~$((ATTEMPT * 10))s"
+              break
+            fi
+            ATTEMPT=$((ATTEMPT + 1))
+            echo "Attempt $ATTEMPT/$MAX_ATTEMPTS - waiting 10s..."
+            sleep 10
+          done
+          if [ $ATTEMPT -eq $MAX_ATTEMPTS ]; then
+            echo "::error::Runner instance not reachable after $((MAX_ATTEMPTS * 10))s"
+            exit 1
+          fi
+
+
       - name: Create Microbenchmark Study
         id: create_study
         run: |
@@ -136,8 +170,6 @@ jobs:
           STUDY_NAME="release-${RELEASE_VERSION}-$(date +%Y%m%d-%H%M%S)"
           
           echo "study_name=${STUDY_NAME}" >> $GITHUB_OUTPUT
-
-          sleep 180s
           
           # Create study using the microbenchmark CLI
           uv run microbenchmark.py study create "${STUDY_NAME}" \
@@ -146,56 +178,71 @@ jobs:
 
       - name: Run Microbenchmarks
         run: |
-          # cd ArmoniK.Microbench
-          
           STUDY_NAME="${{ steps.create_study.outputs.study_name }}"
           RUNNER_HOST="${{ steps.deploy.outputs.runner_host }}"
           RUNNER_KEY="${{ steps.deploy.outputs.runner_key_path }}"
-          
-          # If we have specific config files, use them
           CONFIG_LIST="${{ steps.find_configs.outputs.config_list }}"
           
-          if [ -n "$CONFIG_LIST" ]; then
-            # Run benchmarks with individual config files
-            for config in $CONFIG_LIST; do
-              echo "Running benchmark with config: $config"
-              uv run microbenchmark.py study run "$STUDY_NAME" --repo-url "https://github.com/AncientPatata/ArmoniK.Microbench.git"\
+          TOTAL=0
+          FAILED=0
+          FAILED_CONFIGS=""
+          
+          run_benchmark() {
+            local config="$1"
+            TOTAL=$((TOTAL + 1))
+            echo "::group::Benchmark: $config"
+            if ! uv run microbenchmark.py study run "$STUDY_NAME" \
+                --repo-url "https://github.com/AncientPatata/ArmoniK.Microbench.git" \
                 --runner "./infrastructure/benchmark_configs/runners/benchmark_runner.json" \
                 --config "$config" \
                 --s3-bucket "armonik-microbench-results" \
-                --profile "default" || echo "Benchmark failed for $config, continuing..."
+                --profile "default"; then
+              FAILED=$((FAILED + 1))
+              FAILED_CONFIGS="$FAILED_CONFIGS\n  - $config"
+              echo "::warning::Benchmark failed for $config"
+            fi
+            echo "::endgroup::"
+          }
+          
+          if [ -n "$CONFIG_LIST" ]; then
+            for config in $CONFIG_LIST; do
+              run_benchmark "$config"
+            done
+          elif [ -d "./infrastructure/benchmark_configs" ]; then
+            for config in ./infrastructure/benchmark_configs/*.json; do
+              [ -f "$config" ] && run_benchmark "$config"
             done
           else
-            # Run with directory if configs exist
-            if [ -d "./infrastructure/benchmark_configs" ]; then
-              uv run microbenchmark.py study run "$STUDY_NAME" --repo-url "https://github.com/AncientPatata/ArmoniK.Microbench.git" \
-                --runner "./infrastructure/benchmark_configs/runners/benchmark_runner.json" \
-                --directory "./infrastructure/benchmark_configs" \
-                --s3-bucket "armonik-microbench-results" \
-                --profile "default" || echo "Directory benchmark run failed, continuing..."
-            else
-              echo "No benchmark configurations found to run"
-            fi
+            echo "::error::No benchmark configurations found"
+            exit 1
+          fi
+          
+          echo "## Benchmark Execution Summary" >> $GITHUB_STEP_SUMMARY
+          echo "- **Total:** $TOTAL" >> $GITHUB_STEP_SUMMARY
+          echo "- **Passed:** $((TOTAL - FAILED))" >> $GITHUB_STEP_SUMMARY
+          echo "- **Failed:** $FAILED" >> $GITHUB_STEP_SUMMARY
+          
+          if [ $FAILED -gt 0 ]; then
+            echo -e "::warning::$FAILED/$TOTAL benchmarks failed:$FAILED_CONFIGS"
+          fi
+          if [ $FAILED -eq $TOTAL ] && [ $TOTAL -gt 0 ]; then
+            echo "::error::All benchmarks failed"
+            exit 1
           fi
 
       - name: Retrieve Results
         if: always()
         run: |
-          # cd ArmoniK.Microbench
-          
           STUDY_NAME="${{ steps.create_study.outputs.study_name }}"
+          if [ -z "$STUDY_NAME" ]; then
+            echo "::warning::No study name available, skipping sync"
+            exit 0
+          fi
           
-          # Download results locally
-          uv run microbenchmark.py study sync "$STUDY_NAME" \
-            --output-dir "./results" --no-profile || echo "Failed to sync results, continuing..."
-          
-          # # Also retrieve raw results from the runner
-          # python microbenchmark.py runner retrieve-results \
-          #   --host "${{ steps.deploy.outputs.runner_host }}" \
-          #   --key "${{ steps.deploy.outputs.runner_key_path }}" \
-          #   --s3-bucket "armonik-microbench-results" \
-          #   --s3-key "release-${{ steps.set_tag.outputs.release_tag }}-results.zip" \
-          #   --output-dir "./raw-results" || echo "Failed to retrieve raw results, continuing..."
+          if ! uv run microbenchmark.py study sync "$STUDY_NAME" \
+              --output-dir "./results" --no-profile; then
+            echo "::warning::Failed to sync results from S3"
+          fi
 
       - name: Upload Results as Artifacts
         if: always()
@@ -251,17 +298,33 @@ jobs:
         if: always()
         run: |
           cd infrastructure
-
-          echo "Initializing Terraform for destroy..."
-          terraform init -backend-config=bucket=$REMOTE_TFSTATE_BUCKET -backend-config=key=microbench/${{ env.RUN_ID_UNIQUE }}/terraform.tfstate
-       
-          echo "Destroying Terraform infrastructure..."
-          terraform destroy -var-file="parameters.tfvars"  -var="prefix=microbench-${{ env.RUN_ID_UNIQUE }}" -auto-approve || echo "Failed to destroy some resources"
           
-          # Clean up any remaining state files
-          rm -f terraform.tfstate*
-          rm -f .terraform.lock.hcl
-          rm -rf .terraform/
+          terraform init \
+            -backend-config=bucket=$REMOTE_TFSTATE_BUCKET \
+            -backend-config=key=microbench/${{ env.RUN_ID_UNIQUE }}/terraform.tfstate
+          
+          MAX_RETRIES=1 # TODO: Setting it to 1 for now because I always destroy mainly and the failure is likely credential expiration
+          for i in $(seq 1 $MAX_RETRIES); do
+            echo "Destroy attempt $i/$MAX_RETRIES..."
+            if terraform destroy \
+                -var-file="parameters.tfvars" \
+                -var="prefix=microbench-${{ env.RUN_ID_UNIQUE }}" \
+                -auto-approve; then
+              echo "Infrastructure destroyed successfully"
+              break
+            fi
+            
+            if [ $i -eq $MAX_RETRIES ]; then
+              echo "::error::Failed to destroy infrastructure after $MAX_RETRIES attempts. MANUAL CLEANUP REQUIRED."
+              echo "## :rotating_light: Infrastructure Cleanup Failed" >> $GITHUB_STEP_SUMMARY
+              echo "Terraform state key: microbench/${{ env.RUN_ID_UNIQUE }}/terraform.tfstate" >> $GITHUB_STEP_SUMMARY
+              echo "Run \`terraform destroy\` manually." >> $GITHUB_STEP_SUMMARY
+              exit 1
+            fi
+            
+            echo "Retrying in 30s..."
+            sleep 30
+          done
 
       - name: Cleanup
         if: always()

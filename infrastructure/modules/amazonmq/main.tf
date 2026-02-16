@@ -103,7 +103,7 @@ resource "random_password" "password" {
 resource "aws_mq_broker" "mq" {
 
   broker_name                = local.final_broker_name
-  subnet_ids                 = [var.network_config.subnet_id]
+  subnet_ids                 = var.network_config.subnet_ids
   security_groups            = [aws_security_group.amq_sg.id]
   engine_type                = var.engine_type
   engine_version             = var.engine_version
