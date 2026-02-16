@@ -52,6 +52,7 @@ module "benchmark_runner" {
   benchmark_results_bucket_name = var.results_bucket_name
   ssh_key_name                  = aws_key_pair.benchmark_key.key_name
   instance_type                 = var.benchmark_runner != null ? var.benchmark_runner.instance_type : "c7a.8xlarge"
+  # efs_mount_target_ip = module.efs_benchmark.efs_mount_target_ip
   providers = {
     aws = aws
   }

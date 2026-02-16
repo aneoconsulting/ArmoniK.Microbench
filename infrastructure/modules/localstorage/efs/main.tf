@@ -1,9 +1,5 @@
 locals {
   config_file_path = coalesce(var.config_file_path, "${path.root}/benchmark_configs/efs.json")
-  # common_tags = {
-  #   Name       = "EFS Benchmarks"
-  #   Deployment = "${var.prefix}-armonik-microbench"
-  # }
 
   tags = merge(var.additional_tags, {
     Module = "EFS"

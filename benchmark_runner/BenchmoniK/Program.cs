@@ -268,17 +268,12 @@ static void ExecuteBenchmark(string filePath)
                 BenchmarkRunner.Run(sqsThroughputBenchmark);
                 break;
             
+            case "rabbitmq":
             case "activemq":
                 Console.WriteLine("Starting ActiveMQ Queue benchmark");
                 var activemqThroughputBenchmark =
                     BenchmarkConverter.TypeToBenchmarks(typeof(ActivemqThroughputBenchmark));
                 BenchmarkRunner.Run(activemqThroughputBenchmark);
-                break;
-            case "rabbitmq":
-                Console.WriteLine("Starting RabbitMQ Queue benchmark");
-                var rabbitmqThroughputBenchmark =
-                    BenchmarkConverter.TypeToBenchmarks(typeof(RabbitmqThroughputBenchmark));
-                BenchmarkRunner.Run(rabbitmqThroughputBenchmark);
                 break;
             default:
                 throw new Exception($"Unknown component type: {component}");
