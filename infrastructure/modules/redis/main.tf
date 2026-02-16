@@ -14,6 +14,7 @@ locals {
 resource "aws_security_group" "redis_sg" {
   name        = "${var.prefix}-redis-sg"
   description = "Security group for Redis cluster"
+  vpc_id      = var.network_config.vpc_id
 
   ingress {
     from_port   = 6379 
@@ -25,8 +26,14 @@ resource "aws_security_group" "redis_sg" {
   tags = local.tags
 }
 
+resource "aws_elasticache_subnet_group" "redis_subnet" {
+  name       = "${var.prefix}-redis-subnet"
+  subnet_ids = var.network_config.subnet_ids
+}
+
 resource "aws_elasticache_cluster" "benchmonik_redis" {
   cluster_id           = "${var.prefix}-redis-cluster"  
+  subnet_group_name    = aws_elasticache_subnet_group.redis_subnet.name
   engine               = "redis"
   node_type            = var.node_type  
   num_cache_nodes      = 1

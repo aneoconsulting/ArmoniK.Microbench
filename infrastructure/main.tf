@@ -5,8 +5,9 @@ provider "aws" {
 
 locals {
   network_config = {
-    vpc_id    = module.vpc.vpc_id
-    subnet_id = module.vpc.public_subnets[0]
+    vpc_id     = module.vpc.vpc_id
+    subnet_id  = module.vpc.public_subnets[0]
+    subnet_ids = module.vpc.public_subnets 
   }
   common_tags = merge(
     {
@@ -73,6 +74,7 @@ module "redis_benchmark" {
   profile         = var.profile
   additional_tags = local.common_tags
   node_type       = var.redis_benchmark.instance_type
+  network_config  = local.network_config
   providers = {
     aws = aws
   }
