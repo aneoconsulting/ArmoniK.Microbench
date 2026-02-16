@@ -1,8 +1,9 @@
 site_name: ArmoniK Microbenchmarks
 nav:
-  - Home: index.md 
+  - Home: index.md
   - Getting Started: getting-started.md
-  - Study: study.md 
+  - Studies: study.md
+  - Infrastructure: components/infrastructure.md
 site_url: https://aneoconsulting.github.io/ArmoniK.Microbench 
 markdown_extensions:
   - pymdownx.highlight:
