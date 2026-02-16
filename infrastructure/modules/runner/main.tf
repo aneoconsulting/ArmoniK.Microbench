@@ -106,7 +106,7 @@ resource "aws_security_group" "benchmark_sg" {
   tags = local.tags
 }
 
-# Ubuntu 22.04 LTS AMI
+# Ubuntu 24.04 LTS AMI
 data "aws_ami" "ubuntu_2204" {
   most_recent = true
   owners      = ["099720109477"] # Canonical
@@ -121,7 +121,7 @@ resource "aws_instance" "benchmark_instance" {
   instance_type = var.instance_type
   key_name      = var.ssh_key_name
 
-  subnet_id                   = var.network_config.subnet_id
+  subnet_id                   = var.network_config.subnet_ids[0]
   vpc_security_group_ids      = [aws_security_group.benchmark_sg.id]
   iam_instance_profile        = aws_iam_instance_profile.benchmark_profile.name
   associate_public_ip_address = true

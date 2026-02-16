@@ -71,7 +71,7 @@ data "aws_ami" "ubuntu_2204" {
 resource "aws_instance" "rabbitmq" {
   ami           = data.aws_ami.ubuntu_2204.id
   instance_type = var.instance_type
-  subnet_id     = var.network_config.subnet_id
+  subnet_id     = var.network_config.subnet_ids[0]
   vpc_security_group_ids = [aws_security_group.rabbitmq_sg.id]
   associate_public_ip_address = true
  

@@ -7,7 +7,7 @@ locals {
   }
 
   tags = merge(var.additional_tags, {
-    Module = "Reddis"
+    Module = "Redis"
   })
 }
 

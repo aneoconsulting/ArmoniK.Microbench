@@ -5,6 +5,7 @@ generated/
 infrastructure/benchmark_configs/*
 studies/
 results/
+.idea/
 ## TERRAFORM .GITIGNORE
 
 # Local .terraform directories
